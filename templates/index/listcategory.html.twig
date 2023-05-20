@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage Catégories - {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center text-dark py-5">List des {{ category.title }}</h1>
+{% if category.title is same as ('Chansons') %}
+<div class="d-flex justify-content-center">
+<img  src="{{ asset('assets/images/musique.jpeg') }}" alt="">
+</div>
+{% elseif category.title is same as ('Histoires') %}
+<div class="d-flex justify-content-center">
+<img  src="{{ asset('assets/images/histoire.jpeg') }}" alt=""></div>
+{% endif %}
+<div class="container-cards d-flex justify-content-center flex-wrap">
+
+   
+            
+        {% for product in products %}
+     {% if product.type.title is same as ('PDF')  %}
+     <div class="card-category  my-2 p-3  ">
+        <div class="card-body ">
+        <embed src="{{ asset('upload/') }}{{product.file}}">
+        <a class="pdf" href="{{ asset('upload/') }}{{product.file}}">{{product.title}} </a>
+        </div>
+     {# <div class="pdf-icon ">
+     <a class="pdf" onclick="javascript:window.open(this.href);return(false);" href="{{ asset('upload/') }}{{product.file}}">{{product.file}}
+     
+     </a> #}
+     </div>
+      
+ {% elseif product.type.title is same as ('jpg') or product.type.title is same as('png') %}
+      <a href="{{ asset('upload/') }}{{product.file}}"onclick="javascript:window.open(this.href);return(false);"  >
+     
+      <img class="coloriage-img" src="{{ asset('upload/') }}{{product.file}} " >
+      </a> 
+
+{% elseif product.type.title is same as ('MP4') %}
+ <video width="320" height="240" controls autoplay>
+      <source src="" type=video/mp4>
+    </video>
+{% else %}
+      <div class="card-category  my-2 p-3  ">
+        <div class="card-body ">
+        <iframe width="300" height="300" src="{{ product.file }}"></iframe>
+          <div class="btn-card">
+            <a href="{{ product.file }}" class="button m-4">{{ product.title }}</a>
+            </div>
+        </div>
+        </div>
+    {% endif %} 
+     {% endfor %}</div>
+     
+
+
+
+{% endblock %}

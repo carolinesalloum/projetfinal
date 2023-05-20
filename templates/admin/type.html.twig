@@ -1,0 +1,30 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center py-4">Gestion format</h1>
+    {{form(typeForm)}}
+
+    <table class="table table-secondary">
+        <thead>
+        <tr>
+            <th>Title</th>
+             <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for type in types %}
+        <tr>
+        <td>{{ type.title }}</td>
+        <td>
+        <a href="{{ path('type_edit',{'typeId' : type.id}) }}" class="btn btn-info">Modifier</a>
+        <a href="{{ path('type_delete',{'typeId': type.id }) }}" class="btn btn-danger">Supprimer</a>
+        </td>
+        </tr>
+        {% endfor %}
+         </tbody>
+</table>
+{% endblock %}

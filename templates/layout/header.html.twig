@@ -1,0 +1,71 @@
+<header>
+    <!-- logo -->
+    <div class="container-header d-flex justify-content-between p-3">
+      <a class="logo " href="">
+        <img class="m-3" src="{{ asset('assets/images/logo.png') }}" alt="">
+      </a>
+      <!-- Simulate a smartphone / tablet -->
+      <!-- <div class="mobile-container"> -->
+      <!-- Top Navigation Menu -->
+      <nav class=" navbar navbar-expand-lg justify-content-center  ">
+        <div class="collapse navbar-collapse  " id="myLinks">
+          <ul class="navbar-nav ">
+            <li class="nav-item"><a class="nav-link" href="{{ path('app_index') }}">Accueil</a></li>
+            
+            <li class="dropdown nav-item">
+              <a href="" class=" dropbtn nav-link" >Méthode </a>
+              
+            
+              <div class="dropdown-content">
+               {% for category in categories  %}
+               {% if category.title is same as ('Lessons') or category.title is same as ('Activités')  %}
+               
+                <a href="{{ path('index_category',{'categoryId': category.id }) }}">{{ category.title }}</a>
+                {% endif %}
+                {# {% if  category.title is same as ('Activités') %}
+                 <a href="{{ path('index_category',{'categoryId': category.id }) }}" >{{ category.title }}</a> #}
+                
+          {# {% endif %} #}
+
+              {% endfor %} 
+              </div>
+             
+          </li>
+            
+           <li class="dropdown nav-item">
+            <a class="nav-link" href="">Ludique</a>
+             {% for category in categories  %}
+               {% if category.title is same as ('Chansons') or category.title is same as ('Histoires') or category.title is same as ('Coloriage') %}
+              <div class="dropdown-content">
+           
+                <a href="{{ path('index_category',{'categoryId': category.id }) }}">{{ category.title }}</a>
+                {% endif %}
+                {% endfor %}
+            </div>   
+          </li>  
+               
+          <li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+         {% if is_granted('ROLE_ADMIN')%}
+           <li class="dropdown nav-item">
+              <a href="" class=" dropbtn nav-link" >Admin </a>
+               <div class="dropdown-content">
+               <a href="{{ path('admin_backoffice') }}" > Tableau de Bord </a>
+               {# <a href="{{ path('admin_register',{'categoryId': category.id}) }}" > Inscription Admin </a> #}
+        </div>
+        </li>
+        {% endif %}
+    </ul>  
+     </nav>
+      <!-- log in -->
+  
+{% if app.user %}
+  <a class="button" href="{{ path('app_logout') }}" class="button">Déconnexion</a>
+  {% else %}
+  <div class="conainer-login d-flex">
+      <a href="{{ path('app_login') }}" class="button">Connectexion</a>
+      <a href="{{ path('register') }}" class="button">Isncription</a>
+       </div>
+       {% endif %}
+  </div>
+
+  </header>

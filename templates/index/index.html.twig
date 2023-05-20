@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+
+{% block body %}
+<!-- home section start -->
+  <section class="home  m-5  d-flex justify-content-center">
+    <div class="content ">
+     
+
+
+    </div>
+
+  </section>
+
+  <!-- home section end -->
+
+
+  <!-- cards section start -->
+
+  <div class="container-cards ">
+    <div class="heading">
+      <h3 class="text-center text-dark py-5"> Choisir Vôtre Niveau</h3>
+    </div>
+
+    
+    <div class="row my-2">
+    {% for level in levels %}
+      <div class="card col-3 ">
+        <div class="card-body">
+          <div class="image">
+            <img src="assets/images/card.png" class="img p-3" alt="...">
+          </div>
+           <div class="btn-card">
+            <a href="{{ path('index_level',{'levelId': level.id }) }}" class="button m-4">{{ level.title }}</a></div>
+          {# {% endif %} #}
+          
+        
+       
+        </div>
+      </div>
+   {% endfor %}
+      
+
+    </div>
+  </div>
+  <!-- cards section end -->
+
+  <!-- inscription section start -->
+  <div class="abonner-section bg-light">
+
+    <div class="container-abonner">
+      <div class="row-abonner m-5">
+        <div class=" col-md-6 mb-5 mb-md-0">
+          <img src="assets/images/abonner.jpg" alt="Image" class="img-fluid">
+        </div>
+        <div class="write-section col-md-5 py-5 ">
+          <h3 class="text-black p-3">Apprendre et Jouer Avec Nous!</h3>
+          <p>Apprenez l'arabe pour les enfants en ligne grâce aux vidéos, chansons, histoires , et plain des activités pratiques.
+
+            Grâce à notre méthode d'auto-apprentissage, les enfants peuvent apprendre l'arabe à leur rythme,
+            n'importe quand, n'importe où.</p>
+          <div class="btn-abonnez p-3">
+            <a href="{{ path('register')}}" class="button py-4 ">M'inscrire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- inscription section end -->
+
+
+  <!--  fun section start -->
+  <div class="fun-section ">
+    <div class="container-fun ">
+      <div class="row mb-5">
+        <div class="col-12 text-center  py-5">
+          <h2 class="title-fun">Allons nous s'amuser</h2>
+        </div>
+      </div>
+      
+      <div class="row ">
+        <div class=" col-3  ">
+          <div class="package  text-center " id="card1">
+            <span class="img-wrap"><img src="assets/images/flaticon/pere.png" alt="Image" class="img-fluid"></span>
+            {% for category in categories %}
+          {% if category.title is same as ('Coloriage') %}
+    
+            <p><a  onclick="myAccFunc('{{ category.title }}')" href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a></p>
+          {% endif %} 
+          {% endfor %}
+         </div>
+        </div>
+        <div class=" col-3  ">
+          <div class="package  text-center " id="card2">
+            <span class="img-wrap"><img src="assets/images/flaticon/party.png" alt="Image" class="img-fluid"></span>
+            {% for category in categories %}
+          {% if category.title is same as ('Chansons') %}
+            <a href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a>
+            {% endif %} 
+          {% endfor %}
+          </div>
+        </div>
+        <div class=" col-3 ">
+          <div class="package  text-center  " id="card3">
+            <span class="img-wrap"><img src="assets/images/flaticon/histoires.png" alt="Image" class="img-fluid"></span>
+          {% for category in categories %}
+          {% if category.title is same as ('Histoires') %}
+            <p><a href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a></p>
+            {% endif %} 
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  fun section end -->
+
+  <!-- form contact start -->
+  <div class="container-contact">
+    <div class="row-contact">
+    <div class="image-contact">
+      <img src="assets/images/contactus.jpg" alt="">
+    </div>
+    <form action="">
+<div class="fields">
+      <label for="prénom">Pseudo</label>
+      <input class="input" type="text" id="fname" name="firstname" placeholder="Votre prénom">
+
+
+      <label for="sujet">Message</label>
+      <textarea id="subject" name="subject" placeholder="Votre message.." ></textarea>
+
+      <input type="submit" value="Submit">
+    </div>
+    </form>
+  </div>
+</div>
+
+  <!-- form contact end -->
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center py-4">Gestion niveau</h1>
+    {{form(levelForm)}}
+
+    <table class="table table-secondary">
+        <thead>
+        <tr>
+            <th>Title</th>
+             <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for level in levels %}
+        <tr>
+        <td>{{ level.title }}</td>
+        <td>
+        <a href="{{ path('level_edit',{'levelId' : level.id}) }}" class="btn btn-info">Modifier</a>
+        <a href="{{ path('level_delete',{'levelId': level.id }) }}" class="btn btn-danger">Supprimer</a>
+        </td>
+        </tr>
+        {% endfor %}
+         </tbody>
+</table>
+{% endblock %}

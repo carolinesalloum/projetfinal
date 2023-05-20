@@ -1,0 +1,30 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center py-3">Gestion catégories</h1>
+    {{form(categoryForm)}}
+
+    <table class="table table-secondary ">
+        <thead>
+        <tr>
+            <th>Title</th>
+             <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+        <tr>
+        <td>{{ category.title }}</td>
+        <td>
+        <a href="{{ path('category_edit',{'categoryId' : category.id}) }}" class="btn btn-info">Modifier</a>
+        <a href="{{ path('category_delete',{'categoryId': category.id }) }}" class="btn btn-danger">Supprimer</a>
+        </td>
+        </tr>
+        {% endfor %}
+         </tbody>
+</table>
+{% endblock %}

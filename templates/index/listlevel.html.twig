@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage Levels - {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center  py-5">List de support de {{ level.title }}</h1>
+<h2 class="text-center  py-5"> Lessons </h2>
+<div class="container-cards d-flex justify-content-center flex-wrap">
+   
+           
+           <br>
+        {% for product in products %}
+     {% if product.category.title is same as ('Lessons')  %}
+
+     <div class="card-category  my-2 p-3  ">
+        <div class="card-body ">
+        
+        <iframe width="300" height="300" src="{{ product.file }}"></iframe>
+          <div class="btn-card">
+            <a href="" class="button m-4">{{ product.title }}</a>
+            </div>
+        </div>
+        </div> 
+        {% endif %}
+     {% endfor %}
+     
+     {# <div class="pdf-icon ">
+     <a class="pdf" onclick="javascript:window.open(this.href);return(false);" href="{{ asset('upload/') }}{{product.file}}">{{product.file}}
+      #}
+     {# </a>
+     </div> #}
+      
+ {# {% elseif product.type.title is same as ('jpg') or product.type.title is same as('png') %}
+      <a href="{{ asset('upload/') }}{{product.file}}"onclick="javascript:window.open(this.href);return(false);"  >
+     
+      <img class="coloriage-img" src="{{ asset('upload/') }}{{product.file}} " >
+      </a> 
+
+{% elseif product.type.title is same as ('MP4') %}
+ <video width="320" height="240" controls autoplay>
+      <source src="" type=video/mp4>
+    </video>
+{% else %}#}
+
+      
+
+
+    
+
+
+</div>
+{% endblock %}
