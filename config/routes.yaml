@@ -5,3 +5,13 @@
 #     type: attribute
 
 
+# app_forgot_password_request:
+#   path: /app_forgot_password_request
+#   controller: App\Controller\ResetPasswordController::forgotPasswordRequest
+#   methods: GET
+  
+
+password_reset:
+    path: /reset-password/{token}
+    controller: App\Controller\ResetPasswordController::resetPassword
+    methods: [GET, POST]

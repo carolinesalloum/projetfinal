@@ -123,22 +123,39 @@
     <div class="image-contact">
       <img src="assets/images/contactus.jpg" alt="">
     </div>
-    <form action="">
-<div class="fields">
-      <label for="prénom">Pseudo</label>
-      <input class="input" type="text" id="fname" name="firstname" placeholder="Votre prénom">
-
-
-      <label for="sujet">Message</label>
-      <textarea id="subject" name="subject" placeholder="Votre message.." ></textarea>
-
-      <input type="submit" value="Submit">
+<button class="button" >
+<a href="{{ path('app_contact')}}">Contactez-Nous</a>
+</button>
+   
     </div>
     </form>
   </div>
 </div>
 
   <!-- form contact end -->
+
+
+
+  {# slider  #}
+    <section class="product"> 
+        <h2 class="product-category">Notre Chansons et Histoires en text</h2>
+        <button class="pre-btn"><img src="{{ asset('assets/images/arrow.png') }}" alt=""></button>
+        <button class="nxt-btn"><img src="{{ asset('assets/images/arrow.png') }}" alt=""></button>
+        {% for product in products %}
+     {% if product.type.title is same as ('jpg') and product.category.title is same as ('Activités')  %}
+        <div class="product-container">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="{{ asset('upload/') }}{{product.file}}">
+                    <button class="card-btn">consulter</button>
+                </div>
+              
+            </div>
+            {% endif %} 
+     {% endfor %}
+            
+    </section>
+    
 
 
 {% endblock %}

@@ -6,11 +6,14 @@
 <h1 class="text-center text-dark py-5">List des {{ category.title }}</h1>
 {% if category.title is same as ('Chansons') %}
 <div class="d-flex justify-content-center">
-<img  src="{{ asset('assets/images/musique.jpeg') }}" alt="">
+<img  src="{{ asset('assets/images/musique.jpeg') }}" alt="" class="img-display-category">
 </div>
 {% elseif category.title is same as ('Histoires') %}
 <div class="d-flex justify-content-center">
-<img  src="{{ asset('assets/images/histoire.jpeg') }}" alt=""></div>
+<img  src="{{ asset('assets/images/img-histoire.jpeg') }}" alt="" class="img-display-category"></div>
+{% elseif category.title is same as ('Coloriage') %}
+<div class="d-flex justify-content-center ">
+<img  src="{{ asset('assets/images/img-coloriage.jpeg') }}" alt="" class="img-display-category" ></div>
 {% endif %}
 <div class="container-cards d-flex justify-content-center flex-wrap">
 
@@ -23,10 +26,7 @@
         <embed src="{{ asset('upload/') }}{{product.file}}">
         <a class="pdf" href="{{ asset('upload/') }}{{product.file}}">{{product.title}} </a>
         </div>
-     {# <div class="pdf-icon ">
-     <a class="pdf" onclick="javascript:window.open(this.href);return(false);" href="{{ asset('upload/') }}{{product.file}}">{{product.file}}
      
-     </a> #}
      </div>
       
  {% elseif product.type.title is same as ('jpg') or product.type.title is same as('png') %}
@@ -41,6 +41,7 @@
     </video>
 {% else %}
       <div class="card-category  my-2 p-3  ">
+       
         <div class="card-body ">
         <iframe width="300" height="300" src="{{ product.file }}"></iframe>
           <div class="btn-card">

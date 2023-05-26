@@ -53,7 +53,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $age;
 
- 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+ /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $resetToken;
+
+    // ...
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -151,6 +173,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAge(?int $age): self
     {
         $this->age = $age;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

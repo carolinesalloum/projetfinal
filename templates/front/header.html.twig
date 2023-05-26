@@ -22,10 +22,7 @@
                
                 <a href="{{ path('index_category',{'categoryId': category.id }) }}">{{ category.title }}</a>
                 {% endif %}
-                {# {% if  category.title is same as ('Activités') %}
-                 <a href="{{ path('index_category',{'categoryId': category.id }) }}" >{{ category.title }}</a> #}
-                
-          {# {% endif %} #}
+               
 
               {% endfor %} 
               </div>
@@ -43,8 +40,11 @@
                 {% endfor %}
             </div>   
           </li>  
-               
-          <li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+            {% if app.user %}  
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_contact')}}">Contact</a></li>
+          {% else %}
+           <li class="nav-item"><a class="nav-link" href="{{ path('app_login')}}">Contact</a></li>
+      {% endif %}
          {% if is_granted('ROLE_ADMIN')%}
            <li class="dropdown nav-item">
               <a href="" class=" dropbtn nav-link" >Admin </a>
@@ -59,7 +59,10 @@
       <!-- log in -->
   
 {% if app.user %}
-  <a class="button" href="{{ path('app_logout') }}" class="button">Déconnexion</a>
+ <div class="conainer-login d-flex">
+  <a class="button " href="{{ path('app_logout') }}" >Déconnexion</a>
+   <a class="button " href="" >Mon Compte</a>
+    </div>
   {% else %}
   <div class="conainer-login d-flex">
       <a href="{{ path('app_login') }}" class="button">Connectexion</a>

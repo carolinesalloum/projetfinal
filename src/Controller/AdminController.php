@@ -11,8 +11,11 @@ use App\Form\LevelType;
 use App\Entity\Category;
 use App\Form\ProductType;
 use App\Form\CategoryType;
+use App\Repository\CategoryRepository;
+use App\Repository\LevelRepository;
 use App\Repository\ProductRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\TypeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,19 +36,17 @@ class AdminController extends AbstractController
      * @Route("/", name="admin_backoffice")
      */
 
-    public function adminBackoffice(ManagerRegistry $doctrine): Response
+    public function adminBackoffice(ProductRepository $productRepository,CategoryRepository $categoryRepository): Response
     {
-        //Cette page affiche la liste des Products  avec la possibilité de les créer, de les modifier, et de les supprimer, totalisant ainsi les quatre fonctions du CRUD.
-
-        //On récupère l'Entity Manager, et les Repository de Product et Tag
-        $entityManager = $doctrine->getManager();
-        $productRepository = $entityManager->getRepository(Product::class);
+        //Cette page affiche la liste des Products  avec la possibilité de les créer, de les modifier, et de les supprimer, totalisant ainsi les quatre fonctions du CRUD
+        
         //On récupère la liste de nos Products
-        $products = array_reverse($productRepository->findAll());
-
-        return $this->render('admin/admin_backoffice.html.twig', [
+        $products = $productRepository->findAll();
+        //On récupère la liste de nos categories
+        $categories = $categoryRepository->findAll();
+        return $this->render('admin/admin-backoffice.html.twig', [
             'products' => $products,
-
+            'categories' => $categories
         ]);
     }
 
@@ -54,21 +55,20 @@ class AdminController extends AbstractController
     /**
      * @Route("/product/create", name="product_create")
      */
-    public function createProduct(Request $request, ManagerRegistry $doctrine): Response
+    public function createProduct(Request $request, EntityManagerInterface $manager): Response
     {
-        //Cette méthode nous permet de créer un Product grâce à un formulaire externalisé.
-
-        $entityManager = $doctrine->getManager();
+        //Cette méthode nous permet de créer un Produit grâce à un formulaire externalisé.
+        // EntityManagerInterface $manager obligatoire pour toutes les requêtes d'INSERT INTO, UPDATE, DELETE
+       
         //On crée une nouvelle Entity Product que nous lions à notre formulaire ProductType
         $product = new Product;
+        // $productForm est un objet instance de Form
         $productForm = $this->createForm(ProductType::class, $product, ['file' => true]);
-        //On applique l'objet Request sur notre formulaire
+        //On applique l'objet Request sur notre formulaire pour récupérer les données provenants du formulaire et charger l'objet Product
         $productForm->handleRequest($request);
         //On vérifie si notre formulaire est rempli et valide
         if ($productForm->isSubmitted() && $productForm->isValid()) {
-
-
-
+            // on récupère toutes les données sur l'input type file 
             $file = $productForm->get('file')->getData();
             if (!empty($file)) :
                 $fileName = (new DateTime())->format('Ymd-His') . '_' . $file->getClientOriginalName();
@@ -84,14 +84,15 @@ class AdminController extends AbstractController
                  $fileName=$productForm->get('url')->getData(); 
             endif;
             $product->setFile($fileName);
-           
-            $entityManager->persist($product);
-            $entityManager->flush();
+           // on lui demande de persister l'objet (préparation de la requête)
+            $manager->persist($product);
+             // on envoie l'objet en BDD (execute )
+            $manager->flush();
             $this->addFlash('success', 'Produit crée');
             return $this->redirectToRoute('product_display');
         }
         //Si le formulaire n'est pas rempli, nous renvoyons l'Utilisateur vers ce dernier
-        return $this->render('product/addproduct.html.twig', [
+        return $this->render('admin/addproduct.html.twig', [
             'formName' => 'Création du Support',
             'dataForm' => $productForm->createView(),
             'product' => $product,
@@ -99,38 +100,15 @@ class AdminController extends AbstractController
     }
 
 
-    /**
-     *
-     *
-     * @Route("/product/display/all", name="product_display")
-     */
-    public function displayProductall(ProductRepository $productRepository ,ManagerRegistry $doctrine)
-    {
 
-        $products = $productRepository->findAll();
-
-        //dd($products); // $products contient toutes les entrées de la table product en BDD
-        $entityManager = $doctrine->getManager();
-        $categoryRepository = $entityManager->getRepository(Category::class);
-        $categories = $categoryRepository->findAll();
-
-        return $this->render('product/displayproduct.html.twig', [
-            'products' => $products,
-            'categories' => $categories,
-
-        ]);
-    }
-/**
+ /**
      *
      *
      * @Route("/product/display/{{categoryId}}", name="product_displaycategory")
      */
-    public function displayProductCategory($categoryId, ManagerRegistry $doctrine)
+    public function displayProductCategory($categoryId, CategoryRepository $categoryRepository)
     {
 
-        $entityManager = $doctrine->getManager();
-        $categoryRepository = $entityManager->getRepository(Category::class);
-       
         //On récupère la liste des Categories
         $categories = $categoryRepository->findAll();
       
@@ -143,69 +121,50 @@ class AdminController extends AbstractController
         //Maintenant que nous avons notre Category, nous récupérons les Products qui lui sont associés
         $products = $category->getProducts();
        
-            return $this->render('product/displayproduct.html.twig', [
+            return $this->render('admin/admin-backoffice.html.twig', [
                 'id' => $category->getId(),
                 'products' => $products,
                  'categories' => $categories,
                 'category' => $category,
             ]);
-            
-
-        //dd($products); // $products contient toutes les entrées de la table product en BDD
-
         
-
         
     }
-
-
-
-
-
-
-
 
 
     /**
      * @Route("/product/edit/{productId}", name="product_edit")
      */
-    public function editProduct(Request $request, ManagerRegistry $doctrine, int $productId): Response
+    public function editProduct(Request $request,ProductRepository $productRepository , EntityManagerInterface $manager, int $productId): Response
     {
-
-        $entityManager = $doctrine->getManager();
-        $productRepository = $entityManager->getRepository(Product::class);
-
+// lorsque un paramètre id est passé sur l'url et l'on injecte en dépendance une entité voulue (ici Product), symfony rempli automatique l'objet $product de ses données sur l'id passé (SELECT * FROM product WHERE id={id})
+// nous sommes en modification donc pas d'instanciation de nouvel objet. (pas de new Product)
         $product = $productRepository->find($productId);
         if (!$product) {
             return $this->redirectToRoute('admin_backoffice');
         }
-
+        // on récupère ses donnés de la BDD
         $productForm = $this->createForm(ProductType::class, $product, ['link' => true]);
-
+        //On applique la méthode handleRequest sur notre formulaire
         $productForm->handleRequest($request);
-
+        //Si le formulaire est valide et rempli, nous persistons son Product lié
         if ($productForm->isSubmitted() && $productForm->isValid()) {
 
-
             $edit_file = $productForm->get('editFile')->getData();
-
-
+            // on verifie si le champs editFile a été saisi. alors on modifie la propriété file
             if ($edit_file) {
-
                 $fileName = date('YmdHis') . $edit_file->getClientOriginalName();
+                // on copie le nouveau fichier et supprime le précédent
                 $edit_file->move($this->getParameter('upload_directory'), $fileName);
                 unlink($this->getParameter('upload_directory') . '/' . $product->getFile());
 
-
                 $product->setFile($fileName);
             }
-            $entityManager->persist($product);
-            $entityManager->flush();
+            $manager->persist($product);
+            $manager->flush();
             $this->addFlash('success', 'Produit modifié');
         }
-
-
-        return $this->render('product/editproduct.html.twig', [
+        return $this->render('admin/editproduct.html.twig', [
             'product' => $product,
             'dataForm' => $productForm->createView(),
         ]);
@@ -215,44 +174,20 @@ class AdminController extends AbstractController
     /**
      * @Route("/product/delete/{productId}", name="product_delete")
      */
-    public function deleteProduct(Request $request, ManagerRegistry $doctrine, int $productId): Response
+    public function deleteProduct( EntityManagerInterface $manager,ProductRepository $productRepository , int $productId): Response
     {
         //Cette route permet la suppression d'un Product dont l'ID est renseigné par notre paramètre de route
-
-        $entityManager = $doctrine->getManager();
-        $productRepository = $entityManager->getRepository(Product::class);
-
         $product = $productRepository->find($productId);
+        //on vérifie que le product exist
         if (!$product) {
             return $this->redirectToRoute('admin_backoffice');
         }
         //Si le Product existe, nous procédons à sa suppression, et nous retournons au backoffice
-        $entityManager->remove($product);
-        $entityManager->flush();
+        $manager->remove($product);
+        $manager->flush();
         $this->addFlash('success', 'Produit supprimé');
         return $this->redirectToRoute('product_display');
     }
-
-    // /**
-    //  *
-    //  *
-    //  * @Route("/category/display/all", name="category_display")
-    //  * */
-    // public function displayCategory(Request $request,ManagerRegistry $doctrine)
-    // {
-    //     $entityManager=$doctrine->getManager();
-    //     $categoryRepository= $entityManager->getRepository(Category::class);
-    //     $categories = $categoryRepository->findAll();
-
-
-
-    //     return $this->render('admin/admin_backoffice.html.twig', [
-    //         'categories' => $categories,
-
-
-
-    //     ]);
-    // }
 
     /**
      *
@@ -260,14 +195,11 @@ class AdminController extends AbstractController
      * @Route("/category", name="category")
      * @Route("/category/edit/{categoryId}", name="category_edit")
      */
-    public function createCategory(Request $request, ManagerRegistry $doctrine, int $categoryId = null)
+    public function createCategory(Request $request, EntityManagerInterface $manager, CategoryRepository $categoryRepository, int $categoryId = null)
 
     {
-        $entityManager = $doctrine->getManager();
-        $categoryRepository = $entityManager->getRepository(Category::class);
-
+         //On récupère la liste des Categories
         $categories = $categoryRepository->findAll();
-        //dd($categories)
 
         // création d'un nouvel objet instance de Category pour l'ajout
         if ($categoryId) {  // si $id n'est pas null on est sur la route editCategory
@@ -276,7 +208,6 @@ class AdminController extends AbstractController
 
             $category = new Category();
         }
-
 
         // Création du formulaire en liens avec Category
         $categoryForm = $this->createForm(CategoryType::class, $category);
@@ -288,9 +219,9 @@ class AdminController extends AbstractController
         if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
             // L'objet category est rempli de toutes ses information (pas besoin d'utiliser certains de ses setters pour lui attribuer des valeurs)
             // On demande au manager de préparer la requête
-            $entityManager->persist($category);
+            $manager->persist($category);
             //  On execute
-            $entityManager->flush();
+            $manager->flush();
             // message en session
             if ($categoryId) {
                 $this->addFlash('success', 'Catégorie modifiée');
@@ -298,12 +229,9 @@ class AdminController extends AbstractController
 
                 $this->addFlash('success', 'Catégorie ajoutée');
             }
-
-
             // return d'une redirection sur le twig appelé category (en name de public fonction)
             return $this->redirectToRoute('category');
         }
-
         // on renvoie la vue du formulaire grace à la méthode createView()
         return $this->render('admin/category.html.twig', [
             'categoryForm' => $categoryForm->createView(),
@@ -316,17 +244,17 @@ class AdminController extends AbstractController
      *
      * @Route("/category/delete/{categoryId}", name="category_delete")
      */
-    public function deleteCategory(Request $request, ManagerRegistry $doctrine, int $categoryId): Response
+    public function deleteCategory(EntityManagerInterface $manager,CategoryRepository $categoryRepository, int $categoryId): Response
     {
-        $entityManager = $doctrine->getManager();
-        $categoryRepository = $entityManager->getRepository(Category::class);
+         //On récupère la liste des Categories
         $category = $categoryRepository->find($categoryId);
-
+        //on vérifie que le catégorie exist'
         if (!$category) {
             return $this->redirectToRoute('category');
         }
-        $entityManager->remove($category);
-        $entityManager->flush();
+        //Si le categorie existe, nous procédons à sa suppression, et nous retournons à la page affichage de categories
+        $manager->remove($category);
+        $manager->flush();
         $this->addFlash('success', 'Catégorie supprimé');
         return $this->redirectToRoute('category');
     }
@@ -337,12 +265,10 @@ class AdminController extends AbstractController
      * @Route("/type", name="type")
      * @Route("/type/edit/{typeId}", name="type_edit")
      */
-    public function createType(Request $request, ManagerRegistry $doctrine, int $typeId = null)
+    public function createType(Request $request,TypeRepository $typeRepository,EntityManagerInterface $manager , int $typeId = null)
 
     {
-        $entityManager = $doctrine->getManager();
-        $typeRepository = $entityManager->getRepository(Type::class);
-
+        //
         $types = $typeRepository->findAll();
 
         if ($typeId) {
@@ -358,8 +284,8 @@ class AdminController extends AbstractController
 
         if ($typeForm->isSubmitted() && $typeForm->isValid()) {
 
-            $entityManager->persist($type);
-            $entityManager->flush();
+            $manager->persist($type);
+            $manager->flush();
 
             if ($typeId) {
                 $this->addFlash('success', 'format(type) modifiée');
@@ -383,17 +309,16 @@ class AdminController extends AbstractController
      *
      * @Route("/type/delete/{typeId}", name="type_delete")
      */
-    public function deletetype(Request $request, ManagerRegistry $doctrine, int $typeId): Response
+    public function deletetype(TypeRepository $typeRepo,EntityManagerInterface $manager, int $typeId): Response
     {
-        $entityManager = $doctrine->getManager();
-        $typeRepository = $entityManager->getRepository(Type::class);
-        $type = $typeRepository->find($typeId);
+
+        $type = $typeRepo->find($typeId);
 
         if (!$type) {
             return $this->redirectToRoute('category');
         }
-        $entityManager->remove($type);
-        $entityManager->flush();
+        $manager->remove($type);
+        $manager->flush();
         $this->addFlash('success', 'Type supprimé');
         return $this->redirectToRoute('type');
     }
@@ -404,16 +329,13 @@ class AdminController extends AbstractController
      * @Route("/level", name="level")
      * @Route("/level/edit/{levelId}", name="level_edit")
      */
-    public function createLevel(Request $request, ManagerRegistry $doctrine, int $levelId = null)
+    public function createLevel(Request $request,LevelRepository $levelRepo, EntityManagerInterface $manager, int $levelId = null)
 
     {
-        $entityManager = $doctrine->getManager();
-        $levelRepository = $entityManager->getRepository(Level::class);
-
-        $levels = $levelRepository->findAll();
+        $levels = $levelRepo->findAll();
 
         if ($levelId) {
-            $level = $levelRepository->find($levelId);
+            $level = $levelRepo->find($levelId);
         } else {
 
             $level = new Level();
@@ -425,8 +347,8 @@ class AdminController extends AbstractController
 
         if ($levelForm->isSubmitted() && $levelForm->isValid()) {
 
-            $entityManager->persist($level);
-            $entityManager->flush();
+            $manager->persist($level);
+            $manager->flush();
 
             if ($levelId) {
                 $this->addFlash('success', 'niveau(level) modifiée');
@@ -450,17 +372,16 @@ class AdminController extends AbstractController
      *
      * @Route("/level/delete/{levelId}", name="level_delete")
      */
-    public function deletelevel(Request $request, ManagerRegistry $doctrine, int $levelId): Response
+    public function deletelevel(LevelRepository $levelRepository, EntityManagerInterface $manager, int $levelId): Response
     {
-        $entityManager = $doctrine->getManager();
-        $levelRepository = $entityManager->getRepository(Level::class);
+    
         $level = $levelRepository->find($levelId);
 
         if (!$level) {
             return $this->redirectToRoute('level');
         }
-        $entityManager->remove($level);
-        $entityManager->flush();
+        $manager->remove($level);
+        $manager->flush();
         $this->addFlash('success', 'niveau(level) supprimé');
         return $this->redirectToRoute('level');
     }

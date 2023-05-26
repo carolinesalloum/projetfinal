@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="text-center py-3">Liste des supports</h1>
+    <h1 class="text-center py-3">Tableau de Bord</h1>
 
     <h4 class="text-center">filtrer selon categorie</h4>
     <div class=" col-md-12 text-center py-3">
-  <a href="{{ path('product_display') }}"><button class="btn active btn-dark" > tout</button></a>
+  <a href="{{ path('admin_backoffice') }}"><button class="btn active btn-dark" > tout</button></a>
   {% for category in categories %}
   {% if category.title is same as ('Lessons') or category.title is same as ('Coloriage') or category.title is same as ('Chansons') or category.title is same as ('Histoires')  or category.title is same as ('Activités') %}
   <a href="{{ path('product_displaycategory',{'categoryId': category.id }) }}"><button class="btn active btn-dark"> {{ category.title }}</button></a>
