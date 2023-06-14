@@ -1,0 +1,29 @@
+
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}les Avis{% endblock %}
+
+{% block body %}
+
+ <h1 class="text-center py-3">Gestion comments</h1>
+
+    <table class="table table-secondary ">
+        <thead>
+        <tr>
+            <th>comments</th>
+             <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+        <tr>
+        <td>{{ comment.content }}</td>
+        <td>
+        <a href="{{ path('admin_accept_comments', {'id': comment.id}) }}" class="btn btn-info">accepter</a>
+        <a href="{{ path('admin_delet_comments', {'id': comment.id}) }}" class="btn btn-danger">Supprimer</a>
+        </td>
+        </tr>
+        {% endfor %}
+         </tbody>
+</table>
+{% endblock %}

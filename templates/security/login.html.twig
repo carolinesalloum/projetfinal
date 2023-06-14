@@ -1,48 +1,44 @@
-{% extends 'base.html.twig' %}
+{% extends 'sans-header-footer.html.twig' %}
 {% block title %}
-    {{ parent() }}connexion
+	{{ parent() }}CONNEXION
 {% endblock %}
 
 {% block body %}
+	{% if error %}
+		<div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 
-    <div id="box-inscription">
-    <div class="left">
-    <h1 class="text-start">CONNEXTION</h1>
-    <form method="post">
-    {% if error %}
-               <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>    
-      
-                {% endif %}
-                {% if app.user %}
-                    <div class="mb-3">
-                        Vous êtes connecté(e) comme {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Me déconnecter</a>
-                    </div>
-                {% endif %}
+	{% endif %}
 
-          
-         
-          <input type="text" value="{{ last_username }}"  name="_username" placeholder="email"  />
-         
-          <input type="password" name="_password" placeholder="password" autocomplete="current-password" required />
-          
-          <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}">
-<div class="d-flex py-3">
-          <button type="submit" class="button" > Me connecter </button>
-           <a href="{{ path('register') }}" class="button">M'inscrire</a>
-          
-                <a href="{{ path('forgotten_password')}}" class="btn btn-secondary mt-3">Mot de passe oublié</a>
-       </div> <form> 
-      </div>
-        </div>
-    
-    
+	{% if app.user %}
+		<div class="mb-3">
+			Vous êtes connecté(e) comme
+			{{ app.user.userIdentifier }},
+			<a href="{{ path('app_logout') }}">Me déconnecter</a>
+		</div>
+	{% endif %}
+	<div class="container-connexion">
+		<h2 class="text-center ">CONNECTEZ-VOUS</h2>
+		<div class="formsection">
+			<form method="post">
+				<div class="my-3">
+					<label class="pb-2" for="inputEmail">Email</label>
+					<input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus>
+				</div>
+				<div class="my-3">
+					<label class="pb-2" for="inputPassword">Mot de passe</label>
+					<input type="password" name="_password" placeholder="password" autocomplete="current-password" required/>
+				</div>
+				{# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> #}
+				<button type="submit" class="button mt-4">Me connecter</button>
+				<div class="pt-4 pb-3 d-flex justify-content-center">
+					<small>vous n'avez pas de compte?</small>
+					<a class="px-2" href="{{ path('register') }}">M'inscrire</a>
+				</div>
+				<a href="{{ path('forgotten_password')}}">Mot de passe oublié?</a>
 
-
-{% endblock %}
-
+					<form>
+				</div>
+			</div>
 
 
-
-
-
+		{% endblock %}

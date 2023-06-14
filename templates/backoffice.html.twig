@@ -8,40 +8,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{% block title %} Admin | {% endblock %} </title>
+    <title>
+    {% block title %} Admin  {% endblock %} 
+    </title>
 
-
-    <!-- Custom fonts for this template                                                     -->
-    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-
-    <!-- Custom styles for this template-->
-
-    <link href="{{ asset('assets/CSS/sb-admin-2.min.css') }}" rel="stylesheet">
-
-
+    {% block stylesheet %}
+    <link href="{{ asset('assets/CSS/admin.min.css') }}" rel="stylesheet">
+    {% endblock %}
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"> 
 
 </head>
 
 
 <body id="page-top">
-
-
 <!-- Page Wrapper -->
 <div id="wrapper">
-
-    <!-- Sidebar -->
+ <!-- Sidebar -->
     <ul class="navbar-nav  text-white sidebar sidebar-dark accordion" id="accordionSidebar" style="
-    background-color:#4E73DF;"
-    >
+    background-color:#4E73DF;">
 
-        <!-- Sidebar - Brand -->
+        <!-- Sidebar -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
             <div class="sidebar-brand-icon rotate-n-15">
             <img  src="{{ asset('assets/images/user.png') }}" style= "height:50px; ">
@@ -52,28 +39,18 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-
-        <!-- Nav Item - Dashboard -->
-
-
         <!-- Divider -->
         <hr class="sidebar-divider">
 
         <!-- Heading -->
-        <div class="sidebar-heading">
-            gestion
-        </div>
+
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2"
+            <a class="nav-link collapsed" href="{{ path('admin_backoffice') }}" 
                aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Gestion supports</span>
             </a>
-            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities"
-                 data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ path('product_create') }}" >Ajout support</a>
-                    <a class="collapse-item" href="{{ path('admin_backoffice') }}">Voir les supports</a>
+        
         </li>
                     
                    
@@ -87,7 +64,7 @@
                 </a>
           
              
-       
+        </li>
 
         <hr class="sidebar-divider">
 
@@ -110,6 +87,16 @@
         </li>
 
         <hr class="sidebar-divider">
+         <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ path('admin_comments') }}" 
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Gestion comments</span>
+                </a>
+          
+             
+        </li>
+
 
     </ul>
     <!-- End of Sidebar -->
@@ -128,26 +115,18 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
+<!-- Top Navbar -->
+    <nav class="navbar navbar-light d-flex justify-content-end shadow" >
+      <div>  
+        <a class="text-decoration-none h4" href="{{ path('app_index') }} " >Reviens au site</a>
+        <i class="fa-solid fa-rotate-left fa-lg"></i>
+      </div>
+    </nav>
+<!-- End of Top Navbar -->
 
-<nav class="navbar navbar-expand navbar-light   static-top shadow" style="
-    background-color: #F7F8FB;"
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-
-                    <li class="nav-item dropdown ">
-                        <a class="nav-link  " href="" role="button">
-                            <a class="center" href="{{ path('app_index') }} " >Reviens au site</a>
-                           <a href="{{ path('app_index') }}"> <img class=" rounded-circle"
-                                 src="{{ asset('assets/images/logo.png') }}" style= " hight:150px; width:120px; "> 
-                        </a>
-
-                    </li>
-                </ul>
-            </nav>
-            <!-- End of Topbar -->
+            {# afficher les flash messages #}
             <div class="container col-3 ">
-                {# app.flashes contient les addFlash envoyés en controller, c'est un tableau multidimensionnel
-                qui a pour 1ere dimension le type de message (ex:success, danger, info....) et en sous dimension les messages contenu pour ces types#}
+               
                 {% for type, messages in app.flashes  %}
                     {% for message in messages %}
                         <div class="alert alert-{{ type}}  text-center">
@@ -155,54 +134,20 @@
                         </div>
                     {% endfor %}
                 {% endfor %}
-
-
-
             </div>
-
-
             <div class="container-fluid">
-
-
-                <!-- Page Heading -->
+  
                 {% block body %}       {% endblock %}
+        </div>
 
-
-            </div>
-            <!-- /.container-fluid -->
-
-
+            
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 </div>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-
-    <!-- page footer  -->
-
-
-    <!-- core  -->
-    <script src="{{ asset('vendors/jquery/jquery-3.4.1.js') }}"></script>
-<script src="{{ asset('js/select2.js') }}"></script>
-
-    <script src="{{ asset('vendors/bootstrap/bootstrap.bundle.js') }}"></script>
-
-    <!-- bootstrap affix -->
-    <script src="{{ asset('vendors/bootstrap/bootstrap.affix.js') }}"></script>
-
-    <!-- wow.js -->
-    <script src="{{ asset('vendors/wow/wow.js') }}"></script>
-
-    <!-- google maps -->
-
-
-
+    <script src="https://kit.fontawesome.com/f43726de96.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

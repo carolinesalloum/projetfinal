@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}les Avis{% endblock %}
+
+{% block body %}
+ 
+	
+        {% if app.flashes('error') is not empty %}
+    <div class="alert alert-danger">
+        {{ app.flashes('error') }}
+    </div>
+{% endif %}
+
+
+  
+   {{ form(form) }}
+       
+        <button type="submit" class="btn btn-primary">modifier</button>
+    
+
+{% endblock %}

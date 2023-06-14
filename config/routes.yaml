@@ -11,7 +11,21 @@
 #   methods: GET
   
 
-password_reset:
-    path: /reset-password/{token}
-    controller: App\Controller\ResetPasswordController::resetPassword
-    methods: [GET, POST]
+# password_reset:
+#     path: /reset-password/{token}
+#     controller: App\Controller\ResetPasswordController::resetPassword
+#     methods: [GET, POST]
+
+    # Comments_list:
+    # path: /comments
+    # controller: App\Controller\CommentsController::Comments
+
+#    add_comments:
+#     path: /comments/add/
+#     controller: App\Controller\CommentsController::add_comments
+#      methods: [POST]
+
+account_profile:
+    path: /account/profile
+    controller: App\Controller\AccountController::profile
+    methods: GET

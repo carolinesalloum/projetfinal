@@ -5,6 +5,7 @@
 {% block body %}
 <!-- home section start -->
   <section class="home  m-5  d-flex justify-content-center">
+  <img src="{{ asset('assets/images/b.jpg') }}" alt="" class="img-fluid">
     <div class="content ">
      
 
@@ -18,25 +19,22 @@
 
   <!-- cards section start -->
 
-  <div class="container-cards ">
+  <div class=" container-cards ">
     <div class="heading">
-      <h3 class="text-center text-dark py-5"> Choisir Vôtre Niveau</h3>
+      <h1 class="text-center  py-5"> Choisir Vôtre Niveau</h2>
     </div>
 
     
     <div class="row my-2">
     {% for level in levels %}
-      <div class="card col-3 ">
+      <div class="card col-lg-3 mb-5 ">
         <div class="card-body">
           <div class="image">
-            <img src="assets/images/card.png" class="img p-3" alt="...">
+            <img src="assets/images/card.png" class=" img-fluid img p-3" alt="...">
           </div>
            <div class="btn-card">
             <a href="{{ path('index_level',{'levelId': level.id }) }}" class="button m-4">{{ level.title }}</a></div>
-          {# {% endif %} #}
-          
-        
-       
+         
         </div>
       </div>
    {% endfor %}
@@ -47,19 +45,21 @@
   <!-- cards section end -->
 
   <!-- inscription section start -->
-  <div class="abonner-section bg-light">
+  <div class=" abonner-section bg-light">
 
     <div class="container-abonner">
       <div class="row-abonner m-5">
         <div class=" col-md-6 mb-5 mb-md-0">
-          <img src="assets/images/abonner.jpg" alt="Image" class="img-fluid">
+          <img src="assets/images/abonner.jpg" alt="Image" class=" img-fluid">
         </div>
         <div class="write-section col-md-5 py-5 ">
           <h3 class="text-black p-3">Apprendre et Jouer Avec Nous!</h3>
-          <p>Apprenez l'arabe pour les enfants en ligne grâce aux vidéos, chansons, histoires , et plain des activités pratiques.
+          <img src="assets/images/abonner.jpg" alt="Image" class="coco img-fluid">
+          <p >Apprenez l'arabe pour les enfants en ligne grâce aux vidéos, chansons, histoires , et plain des activités pratiques.
 
             Grâce à notre méthode d'auto-apprentissage, les enfants peuvent apprendre l'arabe à leur rythme,
-            n'importe quand, n'importe où.</p>
+            n'importe quand, n'importe où.
+            Rejoignez nous pour commencer votre apprentissage !</p>
           <div class="btn-abonnez p-3">
             <a href="{{ path('register')}}" class="button py-4 ">M'inscrire</a>
           </div>
@@ -73,14 +73,14 @@
   <!--  fun section start -->
   <div class="fun-section ">
     <div class="container-fun ">
-      <div class="row mb-5">
-        <div class="col-12 text-center  py-5">
+        <div class="heading">
           <h2 class="title-fun">Allons nous s'amuser</h2>
         </div>
-      </div>
+      
       
       <div class="row ">
-        <div class=" col-3  ">
+      
+        <div class=" card-body col-lg-3   ">
           <div class="package  text-center " id="card1">
             <span class="img-wrap"><img src="assets/images/flaticon/pere.png" alt="Image" class="img-fluid"></span>
             {% for category in categories %}
@@ -91,7 +91,8 @@
           {% endfor %}
          </div>
         </div>
-        <div class=" col-3  ">
+        
+        <div class=" card-body col-lg-3  ">
           <div class="package  text-center " id="card2">
             <span class="img-wrap"><img src="assets/images/flaticon/party.png" alt="Image" class="img-fluid"></span>
             {% for category in categories %}
@@ -101,7 +102,7 @@
           {% endfor %}
           </div>
         </div>
-        <div class=" col-3 ">
+        <div class=" card-body col-lg-3  ">
           <div class="package  text-center  " id="card3">
             <span class="img-wrap"><img src="assets/images/flaticon/histoires.png" alt="Image" class="img-fluid"></span>
           {% for category in categories %}
@@ -118,7 +119,7 @@
   <!--  fun section end -->
 
   <!-- form contact start -->
-  <div class="container-contact">
+  {# <div class="container-contact">
     <div class="row-contact">
     <div class="image-contact">
       <img src="assets/images/contactus.jpg" alt="">
@@ -128,33 +129,27 @@
 </button>
    
     </div>
-    </form>
   </div>
+</div> #}
+<section class="sec1">
+<div class="content">
+<a href="{{ path('app_contact')}}" class="text-decoration-none">
+<h1 class="text-center text-light py-3 ">Contactez-Nous</h1>
+<img class"content img-contact" src="assets/images/contactus.jpg" alt="" style="height: 250px;">
+</a>
 </div>
+</section>
+<section class="sec2"></section>
+
 
   <!-- form contact end -->
 
 
 
   {# slider  #}
-    <section class="product"> 
-        <h2 class="product-category">Notre Chansons et Histoires en text</h2>
-        <button class="pre-btn"><img src="{{ asset('assets/images/arrow.png') }}" alt=""></button>
-        <button class="nxt-btn"><img src="{{ asset('assets/images/arrow.png') }}" alt=""></button>
-        {% for product in products %}
-     {% if product.type.title is same as ('jpg') and product.category.title is same as ('Activités')  %}
-        <div class="product-container">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="{{ asset('upload/') }}{{product.file}}">
-                    <button class="card-btn">consulter</button>
-                </div>
-              
-            </div>
-            {% endif %} 
-     {% endfor %}
+   
             
-    </section>
+  
     
 
 

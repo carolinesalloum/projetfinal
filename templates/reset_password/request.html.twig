@@ -6,8 +6,9 @@
     {% for flash_error in app.flashes('reset_password_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
-    <h1>Réinstallation de mot de pass</h1>
-
+    <div class="container-resetpass">
+    <h1 class="text-center py-5">Réinstallation le mot de pass</h1>
+<div class="formsection">
     {{ form_start(requestPassForm) }}
         {{ form_row(requestPassForm.email) }}
         <div>
@@ -17,6 +18,8 @@
             </small>
         </div>
 
-        <button type="submit" class="btn btn-primary">Envoyer</button>
+        <button type="submit" class="button my-3">Envoyer</button>
     {{ form_end(requestPassForm) }}
+    </div>
+    </div>
 {% endblock %}

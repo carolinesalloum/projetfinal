@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Repository\LevelRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentsRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,21 +16,23 @@ class MainController extends AbstractController
    /**
     * @Route("/", name="app_index")
     */
-    public function index( ProductRepository $productRepository, CategoryRepository $categoryRepository ,Levelrepository $levelRepository): Response
+    public function index( ProductRepository $productRepository, CategoryRepository $categoryRepository ,Levelrepository $levelRepository, CommentsRepository $commentsRepository): Response
     {
         //Afficher les products, levels et categories dans la page d'acueille
-      
+      $user = $this->getUser();
         //On récupère la liste des levels
          $levels=$levelRepository->findAll();
          //On récupère la liste des products
          $products =  $productRepository->findAll();
         //On récupère la liste des Categories
         $categories = $categoryRepository->findAll();
-       
+    $comments = $commentsRepository->findAll();
         return $this->render('front/index.html.twig', [
             'categories' => $categories,
             'products' => $products,
-            'levels'=>$levels
+            'levels'=>$levels,
+        'comments' => $comments,
+           'user' => $user 
         ]);
     }
    
@@ -78,7 +82,6 @@ class MainController extends AbstractController
             'categories'=>$categories
             
         ]);
-
 
 
     

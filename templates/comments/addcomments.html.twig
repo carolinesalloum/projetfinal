@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}les Avis{% endblock %}
+
+{% block body %}
+ 
+		
+        {% if app.flashes('error') is not empty %}
+    <div class="alert alert-danger">
+        {{ app.flashes('error') }}
+    </div>
+{% endif %}
+
+<div class="addcomments-container d-flex justify-content-center">
+   <h4 class="text-center py-4">Votre avis nous intérése </h4>
+   <div class="form-comments">
+   {{ form(commentForm) }}
+      </div>
+        <button type="submit" class="btn btn-primary">Ajouter mon avis</button>
+   
+</div>
+{% endblock %}

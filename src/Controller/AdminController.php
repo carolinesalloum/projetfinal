@@ -11,10 +11,11 @@ use App\Form\LevelType;
 use App\Entity\Category;
 use App\Form\ProductType;
 use App\Form\CategoryType;
-use App\Repository\CategoryRepository;
+use App\Repository\TypeRepository;
 use App\Repository\LevelRepository;
 use App\Repository\ProductRepository;
-use App\Repository\TypeRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\CommentsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +26,8 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 /**
- * Security('is_granted("ROLE_ADMIN")')
- * */
+ * @IsGranted("ROLE_ADMIN")
+ */
 /**
  * @Route("/admin")
  */
@@ -68,6 +69,7 @@ class AdminController extends AbstractController
         $productForm->handleRequest($request);
         //On vérifie si notre formulaire est rempli et valide
         if ($productForm->isSubmitted() && $productForm->isValid()) {
+            //Pour gérer les uploads de photos, nous créons un nom aléatoire pour le fichier. Ensuite, nous déplaçons le fichier uploadé à son emplacement final (le répertoire photo). Enfin, nous stockons le nom du fichier dans l'objet ptoduct
             // on récupère toutes les données sur l'input type file 
             $file = $productForm->get('file')->getData();
             if (!empty($file)) :
@@ -104,7 +106,7 @@ class AdminController extends AbstractController
  /**
      *
      *
-     * @Route("/product/display/{{categoryId}}", name="product_displaycategory")
+     * @Route("/product/display/{categoryId}", name="product_displaycategory")
      */
     public function displayProductCategory($categoryId, CategoryRepository $categoryRepository)
     {
@@ -385,4 +387,57 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'niveau(level) supprimé');
         return $this->redirectToRoute('level');
     }
+     /**
+     *
+     * @Route("/comments", name="admin_comments")
+     */
+    // afficher les comments 
+     public function comments(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository ): Response
+    {
+        $comments = $commentsRepository->findAll();
+        $categories = $categoryRepository->findAll();
+        return $this->render('admin/comments.html.twig', [
+                     'comments' => $comments,
+                     'categories'=> $categories,
+        ]);
+         }
+    
+
+
+ /**
+     *
+     * @Route("/comments/delete/{id}", name="admin_delet_comments")
+     */
+    public function commentsDelete(CommentsRepository $commentsRepository,int $id ,EntityManagerInterface $manager): Response
+    {
+
+     $comment = $commentsRepository->find($id);
+
+     if (!$comment) {
+         return $this->redirectToRoute('admin_backoffice');
+     }
+     $manager->remove($comment);
+     $manager->flush();
+     $this->addFlash('success', 'avis est supprimé');
+     return $this->redirectToRoute('admin_comments');
+ }
+
+ /**
+     *
+     * @Route("/comments/accept/{id}", name="admin_accept_comments")
+     */
+    public function commentsAccept(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository,int $id ,EntityManagerInterface $manager): Response
+    {
+        $comment = $commentsRepository->find($id);
+        if (!$comment) {
+            return $this->redirectToRoute('admin_backoffice');
+        }
+        $comment->setActive(true);
+        $manager->persist($comment);
+        $manager->flush();
+        $this->addFlash('success', 'avis est accepté');
+        return $this->redirectToRoute('admin_comments');
+    }
+
+
 }

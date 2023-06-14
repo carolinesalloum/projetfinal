@@ -69,8 +69,6 @@ class SecurityController extends AbstractController
         );
     }
 
-
-
     /**
      *
      *

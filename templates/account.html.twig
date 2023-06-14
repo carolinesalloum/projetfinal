@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MonCompte - {{ parent() }}{% endblock %}
+
+{% block body %}
+ 
+    {# <nav class="navesidebar">
+      <div class="logo">
+        <i class="bx bx-menu menu-icon"></i>
+        <span class="logo-name">CodingLab</span>
+      </div> #}
+       <div class="sidebar">
+        
+        <div class="sidebar-content">
+          <ul class="lists">
+            <li class="list">
+              <a href="{{ path('profile') }}" class="nav-link">
+                <i class="fa-light fa-address-card"></i>
+                {# <span class="link">Mon Profile</span> #}
+              </a>
+            </li>
+            <hr>
+            <li class="list">
+              <a href="#" class="nav-link">
+                <i class="fa-light fa-file-video"></i>
+                <span class="link"> Mes Cours</span>
+                
+              </a>
+            </li>
+            <hr>
+            {{ <li class="list">
+              <a href="#" class="nav-link">
+                <i class="bx bx-bell icon"></i>
+                <span class="link">Mes Commentaires</span>
+              </a>
+            </li> | split("\n") }}
+            
+          </ul>
+
+          
+        </div>
+        
+      </div>
+    {# </nav> #}
+
+    <section class="overlay"></section>
+{% block javascript %}
+<script src="https://kit.fontawesome.com/f43726de96.js" crossorigin="anonymous"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+     <script src="script.js">const navBar = document.querySelector("nav"),
+       menuBtns = document.querySelectorAll(".menu-icon"),
+       overlay = document.querySelector(".overlay");
+
+     menuBtns.forEach((menuBtn) => {
+       menuBtn.addEventListener("click", () => {
+         navBar.classList.toggle("open");
+       });
+     });
+
+     overlay.addEventListener("click", () => {
+       navBar.classList.remove("open");
+     });
+     </script>
+{% endblock %}
+
+{% endblock %}

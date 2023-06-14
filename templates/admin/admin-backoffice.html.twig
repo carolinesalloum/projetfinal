@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="text-center py-3">Tableau de Bord</h1>
-
-    <h4 class="text-center">filtrer selon categorie</h4>
-    <div class=" col-md-12 text-center py-3">
+   
+ <div class=" col-md-12 text-center py-3 ">
+    
+   <a class="d-flex justify-content-start text-decoration-none  "href="{{ path('product_create') }}"><button class="btn btn-primary btn-lg " >Ajout Support</button></a>
+   <h4 >filtrer selon categorie</h4>
   <a href="{{ path('admin_backoffice') }}"><button class="btn active btn-dark" > tout</button></a>
   {% for category in categories %}
   {% if category.title is same as ('Lessons') or category.title is same as ('Coloriage') or category.title is same as ('Chansons') or category.title is same as ('Histoires')  or category.title is same as ('Activités') %}
@@ -18,7 +19,7 @@
   {% endfor %}
 </div>
 
-    <table class=" table table-secondary">
+    <table class=" table table-secondary" >
         <thead>
         <tr>
             <th>Title</th>

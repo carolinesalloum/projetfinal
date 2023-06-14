@@ -18,6 +18,12 @@ class ContactController extends AbstractController
      */
     public function contactApp(CategoryRepository $categoryRepository,Request $request, MailerInterface $mailer): Response
     {
+
+        $user= $this->getUser();
+        if (!$user) {
+            $this->addFlash('danger', 'Veuillez vous connecter pour nous contacter.');
+            return $this->redirectToRoute('app_login');
+        }
         $categories = $categoryRepository->findAll();
       
         $form = $this->createForm(ContactType::class);
@@ -34,7 +40,7 @@ class ContactController extends AbstractController
             ->text($content);
             
         $mailer->send($email);
-        $this->addFlash('success','votre e-mail a été envoyé');
+        $this->addFlash('success','votre message a été envoyé');
         //Après le transfert de notre Entity User, on retourne sur le login
         return $this->redirectToRoute('app_index');
         }
