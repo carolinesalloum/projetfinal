@@ -4,23 +4,31 @@
 
 {% block body %}
 
-<h1 class="text-center py-5">Allons-nous apprendre en s'amusant</h1>
+<h1 class="text-center py-5">Apprenons et amusons-nous!</h1>
 <div class="testimonial container-methode pl-4">
-<p >Apprendre l'arabe avec des chansons et des histoires est une excellente façon d'engager les enfants dans l'apprentissage de la langue.<br>Il est important de rendre l'apprentissage de l'arabe à travers les chansons et les histoires amusant et interactif. Faites preuve de créativité et adaptez les activités en fonction des intérêts des enfants pour maintenir leur motivation et leur engagement tout au long du processus d'apprentissage.<br>
-vous pouvez regarder notre séléction de chansons </p>
+<p >Apprendre l'arabe avec des chansons et des histoires est une excellente façon d'engager les enfants dans l'apprentissage de la langue.<br>Il est important de rendre l'apprentissage  à travers les chansons et les histoires amusant et interactif. 
+.<br>
+Commencez par des chansons simples et entraînez-vous à les écouter régulièrement.<br> Essayez de comprendre les paroles et leur signification.<br>Choisissez des histoires adaptées à l'âge et au niveau de compréhension des enfants.<br>
+L'apprentissage de l'arabe  avec cette méthode offre une expérience interactive et divertissante. N'hésitez pas à explorer notre différentes chansons et à créer un environnement positif et encourageant pour l'enfant. Avec de la pratique régulière et de la patience, l'apprentissage de l'arabe à travers les chansons peut être très bénéfique et agréable. <br>
+Vous pouvez regarder notre séléctions de  
  
  {% for category in categories  %}
 {% if category.title is same as ('Chansons')%}
-<a href="{{ path('index_category',{'categoryId': category.id }) }}">ici</a><img scr="{{ asset('assets/images/flaticon/video-chat.png')}}">
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">Chansons </a><img src="{{ asset('assets/images/flaticon/guitar.png')}}"style="height: 25px;">
 {% endif %}
 {% endfor %}
-</p>
-<p>
+et
 {% for category in categories  %}
-{% if category.title is same as ('Histoire')%}
-<a href="{{ path('index_category',{'categoryId': category.id }) }}">histoires</a>
+{% if category.title is same as ('Histoires')%}
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">Histoires</a><img src="{{ asset('assets/images/flaticon/book.png')}}"style="height: 25px;">
 {% endif %}
 {% endfor %}
-
+<br>
+On a pas oublié les<span class="text-danger"> petits artistes</span> qui adore la 
+{% for category in categories  %}
+{% if category.title is same as ('Coloriage')%}
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">Coloriage </a><img src="{{ asset('assets/images/flaticon/palette.png')}}"style="height: 25px;">
+{% endif %}
+{% endfor %}
 </p></div>
  {% endblock %}
