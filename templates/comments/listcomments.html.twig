@@ -3,9 +3,26 @@
 {% block title %}les Avis{% endblock %}
 
 {% block body %}
+<div class="container">
+      <h2 class="title">Témoingages</h2>
+      <h2 class="text-center">Ce que dise notre clients!</h2>
+ 
+      <div class="testimonial">
+      {% for comment in comments %}
+        <div class="testimonial-info">
+          <h4>{{ comment.user.nickname}}</h4>
+        </div>
+        <div class="testimonial-content">
+          <p>
+            {{ comment.content }}
+          </p>
+        </div>
+        {% endfor %}
+      </div>
 
+    </div>
 
-  <h1 class="text-center pt-5"> Témoingages </h1>
+  {# <h1 class="text-center pt-5"> Témoingages </h1>
   <h2 class="text-center">Ce que dise notre clients!</h2>
  
   <div class="d-flex justify-content-center py-4 ">
@@ -22,19 +39,8 @@
       <hr >
       </div> {% endfor %}
     </div>
-{# <div class="container-comments ">
-{% for comment in comments %}
 
-<div class="container-comment ">
-<div>
-   <h5 class="title-comment">{{ comment.user.nickname}}</h5>
-   {# <p>{{ comment.rating }} stars</p> #}
-{#  #</div>
-    <p>{{ comment.content }}</p>
- </div>
- 
- {% endfor %}#}
- </div>  
+ </div>   #}
 {% endblock %}
 
 

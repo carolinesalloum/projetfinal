@@ -1,29 +1,6 @@
 <?php
 
-// use App\Entity\User;
-// use App\Entity\Admin;
-// use App\Entity\Category;
-// use App\Form\RegistrationType;
-// use Doctrine\Persistence\ManagerRegistry;
-// use Symfony\Component\HttpFoundation\Request;
-// use Symfony\Component\Form\Extension\Core\Type\TextType;
-// use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-// use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-// use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-// use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-// use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-// use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-// namespace App\Controller;
-
-// use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-// use Symfony\Component\HttpFoundation\Response;
-// use Symfony\Component\Routing\Annotation\Route;
-// use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
-// class SecurityController extends AbstractController
-// {
 
 
 namespace App\Controller;

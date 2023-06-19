@@ -20,21 +20,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
-/**
- * @Route("/admin")
- */
+
+
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_backoffice")
+     * @IsGranted("ROLE_ADMIN")
+     * 
+     * @Route("/admin", name="admin_backoffice")
      */
 
     public function adminBackoffice(ProductRepository $productRepository,CategoryRepository $categoryRepository): Response
@@ -54,7 +54,7 @@ class AdminController extends AbstractController
 
 
     /**
-     * @Route("/product/create", name="product_create")
+     * @Route("/admin/product/create", name="product_create")
      */
     public function createProduct(Request $request, EntityManagerInterface $manager): Response
     {
@@ -91,7 +91,7 @@ class AdminController extends AbstractController
              // on envoie l'objet en BDD (execute )
             $manager->flush();
             $this->addFlash('success', 'Produit crée');
-            return $this->redirectToRoute('product_display');
+            return $this->redirectToRoute('admin_backoffice');
         }
         //Si le formulaire n'est pas rempli, nous renvoyons l'Utilisateur vers ce dernier
         return $this->render('admin/addproduct.html.twig', [
@@ -106,9 +106,9 @@ class AdminController extends AbstractController
  /**
      *
      *
-     * @Route("/product/display/{categoryId}", name="product_displaycategory")
+     * @Route("/admin/product/display/{categoryId}", name="product_display")
      */
-    public function displayProductCategory($categoryId, CategoryRepository $categoryRepository)
+    public function displayProductCategory(int $categoryId, CategoryRepository $categoryRepository)
     {
 
         //On récupère la liste des Categories
@@ -124,7 +124,7 @@ class AdminController extends AbstractController
         $products = $category->getProducts();
        
             return $this->render('admin/admin-backoffice.html.twig', [
-                'id' => $category->getId(),
+                  
                 'products' => $products,
                  'categories' => $categories,
                 'category' => $category,
@@ -135,7 +135,7 @@ class AdminController extends AbstractController
 
 
     /**
-     * @Route("/product/edit/{productId}", name="product_edit")
+     * @Route("/admin/product/edit/{productId}", name="product_edit")
      */
     public function editProduct(Request $request,ProductRepository $productRepository , EntityManagerInterface $manager, int $productId): Response
     {
@@ -165,6 +165,7 @@ class AdminController extends AbstractController
             $manager->persist($product);
             $manager->flush();
             $this->addFlash('success', 'Produit modifié');
+            return $this->redirectToRoute('admin_backoffice');
         }
         return $this->render('admin/editproduct.html.twig', [
             'product' => $product,
@@ -174,7 +175,7 @@ class AdminController extends AbstractController
 
 
     /**
-     * @Route("/product/delete/{productId}", name="product_delete")
+     * @Route("/admin/product/delete/{productId}", name="product_delete")
      */
     public function deleteProduct( EntityManagerInterface $manager,ProductRepository $productRepository , int $productId): Response
     {
@@ -182,20 +183,20 @@ class AdminController extends AbstractController
         $product = $productRepository->find($productId);
         //on vérifie que le product exist
         if (!$product) {
-            return $this->redirectToRoute('admin_backoffice');
+            return $this->redirectToRoute('product_display');
         }
         //Si le Product existe, nous procédons à sa suppression, et nous retournons au backoffice
         $manager->remove($product);
         $manager->flush();
-        $this->addFlash('success', 'Produit supprimé');
-        return $this->redirectToRoute('product_display');
+        $this->addFlash('success', 'Produit  supprimé');
+        return $this->redirectToRoute('admin_backoffice');
     }
 
     /**
      *
      *
-     * @Route("/category", name="category")
-     * @Route("/category/edit/{categoryId}", name="category_edit")
+     * @Route("/admin/category", name="category")
+     * @Route("/admin/category/edit/{categoryId}", name="category_edit")
      */
     public function createCategory(Request $request, EntityManagerInterface $manager, CategoryRepository $categoryRepository, int $categoryId = null)
 
@@ -244,7 +245,7 @@ class AdminController extends AbstractController
 
     /**
      *
-     * @Route("/category/delete/{categoryId}", name="category_delete")
+     * @Route("/admin/category/delete/{categoryId}", name="category_delete")
      */
     public function deleteCategory(EntityManagerInterface $manager,CategoryRepository $categoryRepository, int $categoryId): Response
     {
@@ -264,38 +265,40 @@ class AdminController extends AbstractController
     /**
      *
      *
-     * @Route("/type", name="type")
-     * @Route("/type/edit/{typeId}", name="type_edit")
+     * @Route("/admin/type", name="type")
+     * @Route("/admin/type/edit/{typeId}", name="type_edit")
      */
     public function createType(Request $request,TypeRepository $typeRepository,EntityManagerInterface $manager , int $typeId = null)
 
     {
-        //
+        //On récupère la liste des types
         $types = $typeRepository->findAll();
-
+        // si $id n'est pas null on est sur la route type_edit
         if ($typeId) {
             $type = $typeRepository->find($typeId);
         } else {
-
+            // création d'un nouvel objet instance de Type pour l'ajout
             $type = new Type();
         }
-
+        // Création du formulaire en liens avec Category
         $typeForm = $this->createForm(TypeType::class, $type);
-
+        // on appelle la méthode handleRequest sur notre objet formulaire pour récupérer les données provenants du formulaire et charger l'objet Type
         $typeForm->handleRequest($request);
-
+        // condition de soumission et de validité du formulaire
         if ($typeForm->isSubmitted() && $typeForm->isValid()) {
 
+            // On demande au manager de préparer la requête
             $manager->persist($type);
+              //  On execute
             $manager->flush();
-
+            // message in session 
             if ($typeId) {
                 $this->addFlash('success', 'format(type) modifiée');
             } else {
 
                 $this->addFlash('success', 'format(type) ajoutée');
             }
-
+        // return d'une redirection sur le twig appelé type
             return $this->redirectToRoute('type');
         }
 
@@ -309,7 +312,7 @@ class AdminController extends AbstractController
 
     /**
      *
-     * @Route("/type/delete/{typeId}", name="type_delete")
+     * @Route("/admin/type/delete/{typeId}", name="type_delete")
      */
     public function deletetype(TypeRepository $typeRepo,EntityManagerInterface $manager, int $typeId): Response
     {
@@ -328,8 +331,8 @@ class AdminController extends AbstractController
     /**
      *
      *
-     * @Route("/level", name="level")
-     * @Route("/level/edit/{levelId}", name="level_edit")
+     * @Route("/admin/level", name="level")
+     * @Route("/admin/level/edit/{levelId}", name="level_edit")
      */
     public function createLevel(Request $request,LevelRepository $levelRepo, EntityManagerInterface $manager, int $levelId = null)
 
@@ -372,7 +375,7 @@ class AdminController extends AbstractController
 
     /**
      *
-     * @Route("/level/delete/{levelId}", name="level_delete")
+     * @Route("/admin/level/delete/{levelId}", name="level_delete")
      */
     public function deletelevel(LevelRepository $levelRepository, EntityManagerInterface $manager, int $levelId): Response
     {
@@ -389,7 +392,7 @@ class AdminController extends AbstractController
     }
      /**
      *
-     * @Route("/comments", name="admin_comments")
+     * @Route("/admin/comments", name="admin_comments")
      */
     // afficher les comments 
      public function comments(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository ): Response
@@ -406,7 +409,7 @@ class AdminController extends AbstractController
 
  /**
      *
-     * @Route("/comments/delete/{id}", name="admin_delet_comments")
+     * @Route("/admin/comments/delete/{id}", name="admin_delet_comments")
      */
     public function commentsDelete(CommentsRepository $commentsRepository,int $id ,EntityManagerInterface $manager): Response
     {
@@ -424,7 +427,7 @@ class AdminController extends AbstractController
 
  /**
      *
-     * @Route("/comments/accept/{id}", name="admin_accept_comments")
+     * @Route("/admin/comments/accept/{id}", name="admin_accept_comments")
      */
     public function commentsAccept(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository,int $id ,EntityManagerInterface $manager): Response
     {

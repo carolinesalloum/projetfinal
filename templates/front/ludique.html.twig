@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ludique- {{ parent() }}{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center py-5">Allons-nous apprendre en s'amusant</h1>
+<div class="testimonial container-methode pl-4">
+<p >Apprendre l'arabe avec des chansons et des histoires est une excellente façon d'engager les enfants dans l'apprentissage de la langue.<br>Il est important de rendre l'apprentissage de l'arabe à travers les chansons et les histoires amusant et interactif. Faites preuve de créativité et adaptez les activités en fonction des intérêts des enfants pour maintenir leur motivation et leur engagement tout au long du processus d'apprentissage.<br>
+vous pouvez regarder notre séléction de chansons </p>
+ 
+ {% for category in categories  %}
+{% if category.title is same as ('Chansons')%}
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">ici</a><img scr="{{ asset('assets/images/flaticon/video-chat.png')}}">
+{% endif %}
+{% endfor %}
+</p>
+<p>
+{% for category in categories  %}
+{% if category.title is same as ('Histoire')%}
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">histoires</a>
+{% endif %}
+{% endfor %}
+
+</p></div>
+ {% endblock %}

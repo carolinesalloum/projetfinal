@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Méthode- {{ parent() }}{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center py-5">Découvrir Notre Méthode</h1>
+<div class="testimonial container-methode pl-4">
+<p >Enseigner un enfant doit suivre des méthodes simplifiées et bien-aimées afin qu'il puisse continuer à apprendre sans s'ennuyer.<br>
+ Des études ont montré qu'apprendre en écoutant et en regardant accélère le processus éducatif.<br> C'est pourquoi j'ai voulu afficher sur le site des leçons vidéo et diverses activités pour acquérir les compétences nécessaires.</p>
+<p>Bien sûr, l'utilisation de vidéos peut être un outil efficace pour enseigner l'arabe aux enfants.<br> 
+ {% for category in categories  %}
+{% if category.title is same as ('Lessons')%}
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">afficher les védios</a><img scr="{{ asset('assets/images/flaticon/video-chat.png')}}">
+{% endif %}
+{% endfor %}
+<br>N'oubliez pas de discuter du contenu de la vidéo avec les enfants. Après avoir regardé une vidéo, prenez le temps de discuter de ce qu'ils ont vu et entendu. Posez-leur des questions sur les nouveaux mots, les phrases et les concepts abordés dans la vidéo.<br>
+Fournissez des activités supplémentaires liées à la vidéo. Après avoir regardé une vidéo, proposez des activités supplémentaires pour renforcer les compétences linguistiques des enfants. Cela peut inclure des exercices de vocabulaire, des jeux de mémoire, des activités d'écriture ou de dessin basées sur le contenu de la vidéo.</p>
+<p>
+{% for category in categories  %}
+{% if category.title is same as ('Activités')%}
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">afficher les activités</a>
+{% endif %}
+{% endfor %}
+
+</p></div>
+ {% endblock %}

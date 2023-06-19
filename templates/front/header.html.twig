@@ -1,4 +1,134 @@
-<header>
+
+
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <a  href="{{ path('app_index') }}"
+          ><img src="{{ asset('assets/images/logo.png') }}" alt="logo"
+        /></a>
+      </div>
+      <div class="navbar-inner-list ">
+        <ul>
+          <li  >
+            <a class="active-link " href="{{ path('app_index') }}"
+              ><img
+                src="{{ asset('assets/images/flaticon/accueil.png') }}"
+                alt="Accueil logo image"
+              />Accueil</a
+            >
+          </li>
+          <li>
+            <div class="dropdown">
+              <a href="{{ path('methode') }}" class="dropbtn"
+                ><img
+                  src="{{ asset('assets/images/flaticon/arabe.png') }}"
+                  alt="Methode logo image"
+                />Méthode</a
+              >
+              <div class="dropdown-content">
+                {% for category in categories  %}
+								{% if category.title is same as ('Lessons') or category.title is same as ('Activités')  %}
+
+									<a href="{{ path('index_category',{'categoryId': category.id }) }}">{{ category.title }}</a>
+								{% endif %}
+
+							{% endfor %}
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="dropdown">
+              <a href="{{path('ludique')}}" class="dropbtn"
+                ><img
+                  src="{{ asset('assets/images/flaticon/ludique.png') }}"
+                  alt="ludique logo image"
+                />Ludique</a
+              >
+              <div class="dropdown-content">
+			{% for category in categories  %}
+							{% if category.title is same as ('Chansons') or category.title is same as ('Histoires') or category.title is same as ('Coloriage') %}
+								
+
+									<a href="{{ path('index_category',{'categoryId': category.id }) }}">{{ category.title }}</a>
+								{% endif %}
+							{% endfor %}
+
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="{{ path('app_contact')}}"
+              ><img
+                src="{{ asset('assets/images/flaticon/courrier.png') }}"
+                alt="Contact logo image"
+              />Contact</a
+            >
+          </li>
+          <li>
+            <a href="{{ path('app_comments')}}"
+              ><img
+                src="{{ asset('assets/images/flaticon/temoin.png') }}"
+                alt="Temoignages logo image"
+              />Témoignages</a
+            >
+          </li>
+		  {% if is_granted('ROLE_ADMIN')%}
+          <li>
+            <a href="{{ path('admin_backoffice') }}"
+              ><img
+                src="{{ asset('assets/images/flaticon/admin.png') }}"
+                alt="Admin logo image"
+              />Admin</a
+            >
+          </li>
+		  {% endif %}
+        </ul>
+      </div>
+	  
+      <div class="navbar-outer-list">
+        <ul>
+          <li>
+		  {% if app.user %}
+            <div class="dropdown">
+              <a href="" class="dropbtn"
+                ><img
+                  src="{{ asset('assets/images/flaticon/account.png')}}"
+                  alt="account logo image"
+              /></a>
+              <div class="about-dropdown-content">
+                <a href="{{ path('account') }}">Mon Compte</a>
+                <a href="{{ path('app_logout') }}">Deconnexion</a>
+              </div>
+            </div>
+          </li>
+		  
+          <li class="toggle-btn"><i class="fa-solid fa-bars"></i></li>
+         </ul> 
+      
+	  {% else %}
+				<div class="container-login d-flex my-2">
+          		
+					<a href="{{ path('app_login') }}" class="button mr-2 ">Connexion</a>
+					<a href="{{ path('register') }}" class="button ">Inscription</a>
+					</div>
+					<li class="toggle-btn"><i class="fa-solid fa-bars"></i></li>
+					
+			
+				</ul> 
+				</div>
+	  {% endif %}
+    </nav>
+
+    
+
+
+
+
+
+
+
+
+
+{# <header>
 	<!-- logo -->
 	<div class="container-header d-flex justify-content-between p-3">
 		<a class="logo active" href="{{ path('app_index') }}">
@@ -60,6 +190,7 @@
 					</li>
 					{% if is_granted('ROLE_ADMIN')%}
 						<li class="dropdown nav-item">
+						<img src="{{ asset('assets/images/flaticon/admin.png') }}" alt="testimonial" style="height: 40px;">
 							<a href="" class=" dropbtn nav-link">Admin
 							</a>
 							<div class="dropdown-content">
@@ -67,7 +198,7 @@
 									Tableau de Bord
 								</a>
 								{# <a href="{{ path('admin_register',{'categoryId': category.id}) }}" > Inscription Admin </a> #}
-							</div>
+							{# </div>
 						</li>
 					{% endif %}
 				</ul>
@@ -96,4 +227,4 @@
 			{% endif %}
 		</div>
 
-	</header>
+	</header> #} 

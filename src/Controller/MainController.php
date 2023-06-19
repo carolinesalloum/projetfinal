@@ -86,6 +86,32 @@ class MainController extends AbstractController
 
     
     }
-   
 
+    /**
+    * @Route("/methode", name="methode")
+    */
+    public function indexMethode(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
+    {
+        $categories=$categoryRepository->findAll();
+        $products =  $productRepository->findAll();
+        return $this->render('front/methode.html.twig', [
+            'products' => $products,
+            'categories'=>$categories
+            
+        ]);
+    }
+
+     /**
+    * @Route("/ludique", name="ludique")
+    */
+    public function indexLudique(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
+    {
+        $categories=$categoryRepository->findAll();
+        $products =  $productRepository->findAll();
+        return $this->render('front/ludique.html.twig', [
+            'products' => $products,
+            'categories'=>$categories
+            
+        ]);
+    }
 }

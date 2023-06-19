@@ -11,10 +11,12 @@
 <div class="container-contact">
 <h1 class="text-center py-5">Contactez-nous </h1>
 <div class="formsection">
- {{ form(formulaire) }}
- 
+ {{ form_start(form) }}
+ {{ form_row(form) }}
  </div>
   {# <a class="d-flex justify-content-center text-decoration-none mt-4" href="{{ path('app_contact')}}"><input type="submit" vlaue="envoyer" ></a> #}
   <button type="submit" class="button">envoyer</button>
+  {{ form_end(form) }}
+ 
  </div>
 {% endblock %}

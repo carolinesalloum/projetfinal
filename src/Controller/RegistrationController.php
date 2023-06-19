@@ -126,7 +126,7 @@ class RegistrationController extends AbstractController
             $mailer->send($email);
           
             //Création du flashbag
-            $this->addFlash('danger', 'Votre compte n\'est pas encore activé');
+            $this->addFlash('danger', 'Votre compte n\'est pas encore activé,veuillez vérifier votre boîte de réception');
             //Après le transfert de notre Entity User, on retourne sur le login
             return $this->redirectToRoute('app_login');
         }
@@ -155,7 +155,7 @@ class RegistrationController extends AbstractController
             if($user && !$user->getIsVerified()){
                 $user->setIsVerified(true);
                 $em->flush($user);
-                $this->addFlash('success', 'Utilisateur activé');
+                $this->addFlash('success', 'Utilisateur activé, vous pouvez vous connecter');
                 return $this->redirectToRoute('app_index');
             }
         }

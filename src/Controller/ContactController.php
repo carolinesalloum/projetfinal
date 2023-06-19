@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Form\ContactType;
 use Symfony\Component\Mime\Email;
 use App\Repository\CategoryRepository;
+use App\Repository\ContactRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,25 +19,28 @@ class ContactController extends AbstractController
     /**
      * @Route("/contact", name="app_contact")
      */
-    public function contactApp(CategoryRepository $categoryRepository,Request $request, MailerInterface $mailer): Response
+    public function contactApp(CategoryRepository $categoryRepository,Request $request, MailerInterface $mailer ,Contact $contact = null, EntityManagerInterface $manager, ContactRepository $repo): Response
     {
-
+        $contact = NEW contact;
         $user= $this->getUser();
         if (!$user) {
             $this->addFlash('danger', 'Veuillez vous connecter pour nous contacter.');
             return $this->redirectToRoute('app_login');
         }
         $categories = $categoryRepository->findAll();
-      
-        $form = $this->createForm(ContactType::class);
+        $contactRepo = $repo->findAll();
+        // dd($contactRepo);
+        $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData();
-            $address = $data['email'];
-            $content = $data['content'];
-
+            
+            $manager->persist($contact);
+            $manager->flush();
+            $content = $contact->getContent();
+            $userMail = $this->getUser()->getUsername();
+            // dd($userMail);
             $email = (new Email())
-            ->from($address)
+            ->from($userMail)
             ->to('alsalloumcaroline@gmail.com')
             ->subject('Demand de contact')
             ->text($content);
@@ -45,7 +51,7 @@ class ContactController extends AbstractController
         return $this->redirectToRoute('app_index');
         }
         return $this->renderForm('contact/contact.html.twig', [
-            'formulaire' => $form,
+            'form' => $form,
             'categories' => $categories
         ]);
     }

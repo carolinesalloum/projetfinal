@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -14,7 +14,7 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email',EmailType::class,
+            ->add('mail',EmailType::class,
             [
                 'label'=> "Votre Email",
             'attr'=> [
@@ -28,7 +28,7 @@ class ContactType extends AbstractType
                 'attr'=> [
                     'class'=> 'form-control',
                     'style' => 'width:300px;height:300px;font-size:25px;',
-                    'minlength'=> '100',
+                    'minlength'=> '50',
                     'maxlength'=> '400',
                 ]
 
@@ -41,7 +41,7 @@ class ContactType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Contact::class,
         ]);
     }
 }
