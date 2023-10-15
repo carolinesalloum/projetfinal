@@ -3,13 +3,11 @@
 namespace App\Controller;
 
 use App\Repository\CategoryRepository;
-use App\Repository\CommentsRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 
 class AccountController extends AbstractController
@@ -19,47 +17,64 @@ class AccountController extends AbstractController
      */
     public function index(CategoryRepository $categoryRepository ): Response
     {
-        // on récupère le user
-        $user= $this->getUser();
-         // on récupère les categories pour le navbrar
-        $categories= $categoryRepository->findAll();
-        //à partir de notre user on récupère les (avis) comments
-        $comments = $user->getComments();
+        // // on récupère le user
+        //  $user= $userRepository->find($userId);
+        $categories = $categoryRepository->findAll();
+        $user=$this->getUser();
 
-                return $this->render('account/account.html.twig', [
-            'categories' => $categories,
-            'comments'=> $comments
+     if (!$user) {
+        throw $this->createNotFoundException('Utilisateur non trouvé');
+    }
+     $comments = $user->getComments();
+        // //à partir de notre user on récupère ses (avis) comments 
+        // $comments = $user->getComments();
+
+              return $this->render('account/account.html.twig', [
+            'comments'=> $comments,
+            'categories' =>$categories,
+             'user' => $user,
         ]);
     }
     
-    //   /**
-    //  * @Route("/account/changepassword", name="users_pass_modifier")
-    //  */
-    // public function editPass(Request $request, UserPasswordHasherInterface $passHasher,EntityManagerInterface $em,CategoryRepository $categoryRepository)
-    // {
-        
-    //     $categories= $categoryRepository->findAll();
-    //     // on vérifie si on est en méthode POST 
-    //     if($request->isMethod('POST')){
-    //        // on recupère l'utilisateur puisque on a besoin de changer son mot de pass
-    //         $user = $this->getUser();
-
-    //         // On vérifie si les 2 mots de passe sont identiques
-    //         if($request->request->get('pass') == $request->request->get('pass2')){
-    //             $user->setPassword($passHasher->hashPassword($user, $request->request->get('pass')));
-    //             $em->flush();
-    //             $this->addFlash('success', 'Mot de passe mis à jour avec succès');
-
-    //             return $this->redirectToRoute('profile');
-    //         }else{
-    //             $this->addFlash('danger', 'Les deux mots de passe ne sont pas identiques');
-    //         }
-    //     }
-
-    //     return $this->render('account/editpass.html.twig',[
-    //         'categories' => $categories,
-    //     ]);
-    // }
     
-    
+     /**
+     * @Route("/account/delete", name="delete_account")
+     */
+    public function deletAccount(EntityManagerInterface $em ): Response
+    {
+        // Récupérez l'utilisateur actuellement connecté
+        $user = $this->getUser();
+      
+ 
+   if (!$user) {
+    throw $this->createNotFoundException('Utilisateur non trouvé.');
+    }      
+
+
+      // Supprimer les commentaires associés à l'utilisateur
+    $comments = $user->getComments();
+    foreach ($comments as $comment) {
+        $em->remove($comment);
+    }
+
+    //  Supprimer l'utilisateur
+    $em->remove($user);
+
+    //  éxecuter la requete dans BDD
+    $em->flush();
+    // Invalidez la session de l'utilisateur pour le déconnecter
+    $this->get('security.token_storage')->setToken(null);
+
+    //  ajouter un flash message 
+    $this->addFlash('success', 'Votre compte utilisateur a bien été supprimé !');
+
+    //  Redirection vers la page d'accueil après la suppression du compte
+    return $this->redirectToRoute('app_index');
 }
+
+
+
+
+
+}
+

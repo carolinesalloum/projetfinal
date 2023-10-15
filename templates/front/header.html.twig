@@ -4,7 +4,7 @@
       <div class="navbar-brand">
         <a  href="{{ path('app_index') }}"
           ><img src="{{ asset('assets/images/logo.png') }}" alt="logo"
-        /></a>
+        ></a>
       </div>
       <div class="navbar-inner-list ">
         <ul>
@@ -13,20 +13,17 @@
               ><img
                 src="{{ asset('assets/images/flaticon/accueil.png') }}"
                 alt="Accueil logo image"
-              />Accueil</a
-            >
+              >Accueil</a>
           </li>
           <li>
             <div class="dropdown">
               <a href="{{ path('methode') }}" class="dropbtn"
                 ><img
                   src="{{ asset('assets/images/flaticon/arabe.png') }}"
-                  alt="Methode logo image"
-                />Méthode</a
-              >
+                  alt="Methode logo image">Méthode</a>
               <div class="dropdown-content">
                 {% for category in categories  %}
-								{% if category.title is same as ('Lessons') or category.title is same as ('Activités')  %}
+								{% if category.title is same as ('Leçons') or category.title is same as ('Activités')  %}
 
 									<a href="{{ path('index_category',{'categoryId': category.id }) }}">{{ category.title }}</a>
 								{% endif %}
@@ -40,9 +37,7 @@
               <a href="{{path('ludique')}}" class="dropbtn"
                 ><img
                   src="{{ asset('assets/images/flaticon/ludique.png') }}"
-                  alt="ludique logo image"
-                />Ludique</a
-              >
+                  alt="ludique logo image">Ludique</a >
               <div class="dropdown-content">
 			{% for category in categories  %}
 							{% if category.title is same as ('Chansons') or category.title is same as ('Histoires') or category.title is same as ('Coloriage') %}
@@ -60,7 +55,7 @@
               ><img
                 src="{{ asset('assets/images/flaticon/courrier.png') }}"
                 alt="Contact logo image"
-              />Contact</a
+            >Contact</a
             >
           </li>
           <li>
@@ -68,7 +63,7 @@
               ><img
                 src="{{ asset('assets/images/flaticon/temoin.png') }}"
                 alt="Temoignages logo image"
-              />Témoignages</a
+              >Témoignages</a
             >
           </li>
 		  {% if is_granted('ROLE_ADMIN')%}
@@ -77,11 +72,15 @@
               ><img
                 src="{{ asset('assets/images/flaticon/admin.png') }}"
                 alt="Admin logo image"
-              />Admin</a
+              >Admin</a
             >
           </li>
 		  {% endif %}
+
         </ul>
+		 <div class="close-btn">
+          <i class="fa-solid fa-times"></i>
+        </div>
       </div>
 	  
       <div class="navbar-outer-list">
@@ -93,7 +92,7 @@
                 ><img
                   src="{{ asset('assets/images/flaticon/account.png')}}"
                   alt="account logo image"
-              /></a>
+              ></a>
               <div class="about-dropdown-content">
                 <a href="{{ path('account') }}">Mon Compte</a>
                 <a href="{{ path('app_logout') }}">Deconnexion</a>
@@ -103,6 +102,7 @@
 		  
           <li class="toggle-btn"><i class="fa-solid fa-bars"></i></li>
          </ul> 
+		
       
 	  {% else %}
 				<div class="container-login d-flex my-2">

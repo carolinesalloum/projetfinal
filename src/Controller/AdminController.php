@@ -20,7 +20,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -64,31 +63,44 @@ class AdminController extends AbstractController
         //On crée une nouvelle Entity Product que nous lions à notre formulaire ProductType
         $product = new Product;
         // $productForm est un objet instance de Form
-        $productForm = $this->createForm(ProductType::class, $product, ['file' => true]);
+        $productForm = $this->createForm(ProductType::class, $product, ['file' => true]); //['file' => true] activation de chargement de fichiers en mode création
+
+        //$this->createForm() est utilisée pour créer un objet formulaire
+        //ProductType::class : C'est le nom de la classe de formulaire que vous souhaitez utiliser pour créer le formulaire.
+        // $product : Il s'agit de l'objet que on va utiliser pour remplir le formulaire
         //On applique l'objet Request sur notre formulaire pour récupérer les données provenants du formulaire et charger l'objet Product
-        $productForm->handleRequest($request);
+       
+        $productForm->handleRequest($request);//Pour traiter les données du formulaire,Une fois que handleRequest() a été appelé, le formulaire est mis à jour avec les données soumises.
+
         //On vérifie si notre formulaire est rempli et valide
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             //Pour gérer les uploads de photos, nous créons un nom aléatoire pour le fichier. Ensuite, nous déplaçons le fichier uploadé à son emplacement final (le répertoire photo). Enfin, nous stockons le nom du fichier dans l'objet ptoduct
-            // on récupère toutes les données sur l'input type file 
+
+            //on récupère le fichier téléchargé à partir du formulaire.
             $file = $productForm->get('file')->getData();
             if (!empty($file)) :
+                //$fileName : C'est le nom du fichier de destination: on génère un nom de fichier unique basé sur la date et l'heure actuelles et le nom de fichier d'origine :
                 $fileName = (new DateTime())->format('Ymd-His') . '_' . $file->getClientOriginalName();
               
                 try {
+                    // Le code tente ensuite de déplacer le fichier téléchargé vers un répertoire spécifié à l'aide de la méthode $file->move() de Symfony. Si une erreur se produit pendant ce processus (par exemple, si le fichier ne peut pas être déplacé), il interceptera une FileException et la videra pour le débogage :
                     $file->move($this->getParameter('upload_directory'), $fileName);
+                    //$fileName : C'est le nom du fichier de destination
                    
                 } catch (FileException $e) {
                     dd($e);
                 }
 
             else :
+                //si aucun fichier n'est téléchargé, on récupérer une URL du formulaire et l'assigne à la variable $fileName.
                  $fileName=$productForm->get('url')->getData(); 
             endif;
+            // Ceci définit le nom du fichier (soit à partir du fichier téléchargé, soit à partir de l'URL) sur l'entité $product.
             $product->setFile($fileName);
            // on lui demande de persister l'objet (préparation de la requête)
             $manager->persist($product);
              // on envoie l'objet en BDD (execute )
+            //  Ceci exécute la requête de base de données pour insérer ou mettre à jour l'entité.
             $manager->flush();
             $this->addFlash('success', 'Produit crée');
             return $this->redirectToRoute('admin_backoffice');
@@ -109,13 +121,13 @@ class AdminController extends AbstractController
      * @Route("/admin/product/display/{categoryId}", name="product_display")
      */
     public function displayProductCategory(int $categoryId, CategoryRepository $categoryRepository)
-    {
+    {// dans cette méthode on affiche les produits selon leur catégories (les filters dans la page du back office)
 
         //On récupère la liste des Categories
         $categories = $categoryRepository->findAll();
       
         //Via le Repository, nous recherchons la Category qui nous intéresse. Si celle-ci n'existe pas, nous retournons à l'index
-        $category = $categoryRepository->findOneBy(['id' => $categoryId]);
+        $category = $categoryRepository->findOneBy(['id' => $categoryId]);//recherche une seule entité category selon son id dans la base de données 
         
         if (!$category) {
             return $this->redirectToRoute('admin_backoffice');
@@ -146,12 +158,13 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin_backoffice');
         }
         // on récupère ses donnés de la BDD
-        $productForm = $this->createForm(ProductType::class, $product, ['link' => true]);
-        //On applique la méthode handleRequest sur notre formulaire
+        $productForm = $this->createForm(ProductType::class, $product, ['link' => true]);//link =< true cet à dire mode modification
+        //On applique la méthode handleRequest sur notre formulaire, les données du formulaire seront traités
         $productForm->handleRequest($request);
         //Si le formulaire est valide et rempli, nous persistons son Product lié
         if ($productForm->isSubmitted() && $productForm->isValid()) {
 
+            //on récupère le fichier téléchargé à partir du formulaire.
             $edit_file = $productForm->get('editFile')->getData();
             // on verifie si le champs editFile a été saisi. alors on modifie la propriété file
             if ($edit_file) {
@@ -160,10 +173,10 @@ class AdminController extends AbstractController
                 $edit_file->move($this->getParameter('upload_directory'), $fileName);
                 unlink($this->getParameter('upload_directory') . '/' . $product->getFile());
 
-                $product->setFile($fileName);
+                $product->setFile($fileName);//définit le nom de fichier
             }
-            $manager->persist($product);
-            $manager->flush();
+            $manager->persist($product);//prépare la requette 
+            $manager->flush();//éxécute la requette
             $this->addFlash('success', 'Produit modifié');
             return $this->redirectToRoute('admin_backoffice');
         }
@@ -204,11 +217,12 @@ class AdminController extends AbstractController
          //On récupère la liste des Categories
         $categories = $categoryRepository->findAll();
 
-        // création d'un nouvel objet instance de Category pour l'ajout
+        
         if ($categoryId) {  // si $id n'est pas null on est sur la route editCategory
             $category = $categoryRepository->find($categoryId);
-        } else { // sinon on est sur la route category donc en création
-
+        } 
+        else { // sinon on est sur la route category donc en création
+        // création d'un nouvel objet instance de Category pour l'ajout
             $category = new Category();
         }
 
@@ -220,7 +234,7 @@ class AdminController extends AbstractController
 
         // condition de soumission et de validité du formulaire
         if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
-            // L'objet category est rempli de toutes ses information (pas besoin d'utiliser certains de ses setters pour lui attribuer des valeurs)
+           
             // On demande au manager de préparer la requête
             $manager->persist($category);
             //  On execute
@@ -249,15 +263,16 @@ class AdminController extends AbstractController
      */
     public function deleteCategory(EntityManagerInterface $manager,CategoryRepository $categoryRepository, int $categoryId): Response
     {
-         //On récupère la liste des Categories
+         //On récupère la Category qui nous intéresse
         $category = $categoryRepository->find($categoryId);
         //on vérifie que le catégorie exist'
         if (!$category) {
             return $this->redirectToRoute('category');
         }
         //Si le categorie existe, nous procédons à sa suppression, et nous retournons à la page affichage de categories
-        $manager->remove($category);
-        $manager->flush();
+        $manager->remove($category);//prépare la requete 
+        $manager->flush();//éxécute la requette
+        //afficher le message 
         $this->addFlash('success', 'Catégorie supprimé');
         return $this->redirectToRoute('category');
     }
@@ -280,7 +295,7 @@ class AdminController extends AbstractController
             // création d'un nouvel objet instance de Type pour l'ajout
             $type = new Type();
         }
-        // Création du formulaire en liens avec Category
+        // Création du formulaire en liens avec entité Type 
         $typeForm = $this->createForm(TypeType::class, $type);
         // on appelle la méthode handleRequest sur notre objet formulaire pour récupérer les données provenants du formulaire et charger l'objet Type
         $typeForm->handleRequest($request);
@@ -293,10 +308,10 @@ class AdminController extends AbstractController
             $manager->flush();
             // message in session 
             if ($typeId) {
-                $this->addFlash('success', 'format(type) modifiée');
+                $this->addFlash('success', 'format modifiée');
             } else {
 
-                $this->addFlash('success', 'format(type) ajoutée');
+                $this->addFlash('success', 'format ajoutée');
             }
         // return d'une redirection sur le twig appelé type
             return $this->redirectToRoute('type');
@@ -316,12 +331,13 @@ class AdminController extends AbstractController
      */
     public function deletetype(TypeRepository $typeRepo,EntityManagerInterface $manager, int $typeId): Response
     {
-
+        //chercher le type selon son id
         $type = $typeRepo->find($typeId);
-
+        //si le type n'éxist pas on reviens sur la route type
         if (!$type) {
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('type');
         }
+
         $manager->remove($type);
         $manager->flush();
         $this->addFlash('success', 'Type supprimé');
@@ -336,22 +352,28 @@ class AdminController extends AbstractController
      */
     public function createLevel(Request $request,LevelRepository $levelRepo, EntityManagerInterface $manager, int $levelId = null)
 
-    {
+    {//On récupère la liste des levels
         $levels = $levelRepo->findAll();
 
+        // si $id n'est pas null on est sur la route level_edit
         if ($levelId) {
+            // récupère le level selon son id 
             $level = $levelRepo->find($levelId);
-        } else {
-
+        } 
+        else {//sinon $levelId est null ,alors on est sur la route  d'ajout
+             // création d'un nouvel objet instance de Level pour l'ajout
             $level = new Level();
         }
-
+// Création du formulaire en liens avec entité Level 
         $levelForm = $this->createForm(LevelType::class, $level);
 
+        //traiter les informations
         $levelForm->handleRequest($request);
 
+        //vérifier que le formulaire est valide et remplie
         if ($levelForm->isSubmitted() && $levelForm->isValid()) {
 
+            //prépare la requette et l'éxécuter
             $manager->persist($level);
             $manager->flush();
 
@@ -395,13 +417,14 @@ class AdminController extends AbstractController
      * @Route("/admin/comments", name="admin_comments")
      */
     // afficher les comments 
-     public function comments(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository ): Response
+     public function comments(CommentsRepository $commentsRepository ): Response
     {
+        //chercher les comments 
         $comments = $commentsRepository->findAll();
-        $categories = $categoryRepository->findAll();
+       
         return $this->render('admin/comments.html.twig', [
                      'comments' => $comments,
-                     'categories'=> $categories,
+                     
         ]);
          }
     
@@ -412,13 +435,17 @@ class AdminController extends AbstractController
      * @Route("/admin/comments/delete/{id}", name="admin_delet_comments")
      */
     public function commentsDelete(CommentsRepository $commentsRepository,int $id ,EntityManagerInterface $manager): Response
-    {
+    {//supprimer une commentaire
 
+    //on cherche le commentaire selon son id
      $comment = $commentsRepository->find($id);
 
+        //vérifie que cecommentaire est existé
      if (!$comment) {
          return $this->redirectToRoute('admin_backoffice');
      }
+     ////Si le commentaire existe, nous procédons à sa suppression, et nous retournons à la page de commentaires
+     
      $manager->remove($comment);
      $manager->flush();
      $this->addFlash('success', 'avis est supprimé');
@@ -431,11 +458,12 @@ class AdminController extends AbstractController
      */
     public function commentsAccept(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository,int $id ,EntityManagerInterface $manager): Response
     {
+        //chercher le commentaire qui nous intéresse
         $comment = $commentsRepository->find($id);
         if (!$comment) {
             return $this->redirectToRoute('admin_backoffice');
         }
-        $comment->setActive(true);
+        $comment->setActive(true);// accepter la commentaire comme ça elle apparit dans la page de témoignage
         $manager->persist($comment);
         $manager->flush();
         $this->addFlash('success', 'avis est accepté');

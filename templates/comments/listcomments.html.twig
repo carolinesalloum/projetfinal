@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}les Avis{% endblock %}
+{% block title %}Les avis{% endblock %}
 
 {% block body %}
 <div class="container">
-      <h2 class="title">Témoingages</h2>
-      <h2 class="text-center">Ce que dise notre clients!</h2>
+      <h1 class="title text-center pt-5">Témoignages</h1>
+      <h4 class="text-center">Ce que disent nos clients!</h4>
  
       <div class="testimonial">
       {% for comment in comments %}
@@ -16,10 +16,12 @@
           <p>
             {{ comment.content }}
           </p>
+          <hr>
         </div>
         {% endfor %}
       </div>
-
+ <div class="d-flex justify-content-center py-4 ">
+  <a href="{{ path('add_comment')}}" class="button"  >Ajouter mon avis</a></div>
     </div>
 
   {# <h1 class="text-center pt-5"> Témoingages </h1>

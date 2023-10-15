@@ -3,16 +3,23 @@
 {% block title %}Page de contact{% endblock %}
 
 {% block body %}
+
  {% if app.flashes('error') is not empty %}
     <div class="alert alert-danger">
         {{ app.flashes('error') }}
     </div>
 {% endif %}
-<div class="container-contact">
+<div class="container-contact"> 
 <h1 class="text-center py-5">Contactez-nous </h1>
-<div class="formsection">
+<div class="formsection" >
+
  {{ form_start(form) }}
- {{ form_row(form) }}
+                      <fieldset class="mb-3">
+                        <legend> </legend>
+
+ {{ form_row(form.mail) }}
+ {{ form_row(form.content) }}
+ </fieldset>
  </div>
   {# <a class="d-flex justify-content-center text-decoration-none mt-4" href="{{ path('app_contact')}}"><input type="submit" vlaue="envoyer" ></a> #}
   <button type="submit" class="button">envoyer</button>

@@ -3,25 +3,13 @@
 {% block title %}Affichage Catégories - {{ parent() }}{% endblock %}
 
 {% block body %}
-<h1 class="text-center text-dark py-5"> {{ category.title }}</h1>
-{% if category.title is same as ('Chansons') %}
-<div class="d-flex justify-content-center">
-<img  src="{{ asset('assets/images/musique.jpeg') }}" alt="" class="img-display-category">
-</div>
-{% elseif category.title is same as ('Histoires') %}
-<div class="d-flex justify-content-center">
-<img  src="{{ asset('assets/images/img-histoire.jpeg') }}" alt="" class="img-display-category"></div>
-{% elseif category.title is same as ('Coloriage') %}
-<div class="d-flex justify-content-center ">
-<img  src="{{ asset('assets/images/img-coloriage.jpeg') }}" alt="" class="img-display-category" ></div>
-{% endif %}
-<div class="container-cards d-flex justify-content-center flex-wrap">
+<h1 class="text-center text-dark my-4"> {{ category.title }}</h1>
 
-   
+<div class="container-cards d-flex justify-content-center flex-wrap py-4">
             
         {% for product in products %}
      {% if product.type.title is same as ('PDF')  %}
-     <div class="card-category  my-2 p-3  ">
+     <div class="card-category  my-2  ">
         <div class="card-body ">
         <embed src="{{ asset('upload/') }}{{product.file}}">
         <a class="pdf" href="{{ asset('upload/') }}{{product.file}}">{{product.title}} </a>
@@ -32,13 +20,9 @@
  {% elseif product.type.title is same as ('jpg') or product.type.title is same as('png') %}
       <a href="{{ asset('upload/') }}{{product.file}}"onclick="javascript:window.open(this.href);return(false);"  >
      
-      <img class="coloriage-img" src="{{ asset('upload/') }}{{product.file}} " >
+      <img class="coloriage-img" src="{{ asset('upload/') }}{{product.file}} " width="300" height="300" >
       </a> 
 
-{% elseif product.type.title is same as ('MP4') %}
- <video width="320" height="240" controls autoplay>
-      <source src="" type=video/mp4>
-    </video>
 {% else %}
 
       <div class="card-category  my-4 mx-4  ">
@@ -53,43 +37,5 @@
         </div>
     {% endif %} 
      {% endfor %}</div>
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}

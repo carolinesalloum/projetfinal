@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{ parent() }}INCRIPTION
+{% endblock %}
+{% block body %}
+
+
+<div class="container-connexion">
+			<h2 class="text-center">INSCRIPTION</h2>
+			<div class="formsection">
+			
+			{{ form_start(userForm) }}
+			{{ form_row(userForm.nickname) }}
+			{{ form_row(userForm.email) }}
+			{{ form_row(userForm.age) }}
+			{{ form_row(userForm.password) }}
+			{{ form_row(userForm.confirmPassword) }}
+
+				<a href="{{ path('register') }}"><input type="submit"  name="submit" value="S'inscrire" /></a>
+			
+			{{ form_end(userForm) }}
+	</div>
+</div>
+
+{% endblock %}
+
+

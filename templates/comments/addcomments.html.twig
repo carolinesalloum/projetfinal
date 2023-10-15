@@ -12,14 +12,18 @@
 {% endif %}
 
 
-   <h4 class="text-center py-4">Votre avis nous intérése </h4>
+   <h4 class="text-center py-4">Votre avis nous intérése! </h4>
+   
    <div class="d-flex justify-content-center">
 
    {{ form_start(commentForm) }}
-	
-				    
+	<button type="submit" class="button text-center my-3">Envoyer </button>
+	  {{ form_end(commentForm) }}  
+      
+    
+        </div>
+
+       
  
-        <button type="submit" class="button text-center">Ajouter </button>
-   {{ form_end(commentForm) }}
-</div>
+
 {% endblock %}

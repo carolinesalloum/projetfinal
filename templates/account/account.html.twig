@@ -1,82 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profile Utilisateur{% endblock %}
+{% block title %}Profile Utilisateur
+{% endblock %}
 
 {% block body %}
- <div class="container">
- {% for type, messages in app.flashes  %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type}}  text-center">
-                       {{ message }}
-                        </div>{% endfor %}
-                {% endfor %}
-      <h2 class="title">Données personnelles de {{ app.user.nickname }} </h2>
-      <div class="profile-info">
-        <div class="profile-name">
-          <p>Prenom</p>
-          <p class="name">{{ app.user.nickname }}</p>
-        </div>
-        <div class="profile-email">
-          <p>Email</p>
-          <p class="email">{{ app.user.email }}</p>
-        </div>
-        <div class="profile-age">
-          <p>Age</p>
-          <p class="age">{{ app.user.age }}</p>
-        </div>
-        <div class="profile-avis">
-          <p>Mes Avis</p>
-{% for comment in comments %}
-          <p class="avis">
-            {{ comment.content }} . '/'
-          </p>
-          {% endfor %} 
-        </div>
-      </div>
-    </div>
- {# <div class="container col-3 ">
-               
-                {% for type, messages in app.flashes  %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type}}  text-center">
-                       {{ message }}
-                        </div>{% endfor %}
-                {% endfor %}
-                </div>
-		<div class="text-center py-5">
-			<h1>Données personnelles de {{ app.user.nickname }} </h1>
+	<div class="container">
+		{% for type, messages in app.flashes  %}
+			{% for message in messages %}
+				<div class="alert alert-{{ type}}  text-center">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+		<h2 class="title text-center my-3">Données personnelles de
+			{{ app.user.nickname }}
+		</h2>
+		<div class="profile-info">
+			<div class="profile-name">
+				<p>Prenom</p>
+				<p class="name">{{ app.user.nickname }}</p>
+			</div>
+      <hr>
+			<div class="profile-email">
+				<p>Email</p>
+				<p class="email">{{ app.user.email }}</p>
+			</div>
+       <hr>
+			<div class="profile-age">
+				<p>Age</p>
+				<p class="age">{{ app.user.age }}</p>
+			</div>
+       <hr>
+			<div class="profile-avis">
+				<p>Mes Avis</p>
+				{% for comment in comments %}
+					<p class="avis">
+						{{ comment.content }}
+						
+					</p>
+				{% endfor %}
+				
+				</div>
+			
 		</div>
-        <div class="container-profile">
-        <table class="table table-info table-bordered">
-        <tbody>
-        <tr>
-        <td>Prénom</td>
-        <td>{{ app.user.nickname }}</td>
-        </tr>
-        <tr>
-        <td>Email</td>
-        <td>{{ app.user.email }}</td>
-        </tr>
-        <tr>
-        <td>Age</td>
-        <td>{{ app.user.age }}</td>
-        </tr>
-        
-        
-        <tr>
-        <td>Mes Avis</td>
-        {% for comment in comments %}
-        <td>{{ comment.content }}</td>
-       {% endfor %} 
-        </tr>
-         <td>
-         {# <a href="{{ path('edit_comment') }}" class="btn btn-info">modifier</a> #}
-        {# <a href="{{ path('delet_comment', {'id': comment.id}) }}" class="btn btn-danger">Supprimer</a>
-        </td>#} 
-         
-         {# </tbody>
-        </table>
-        </div>
-        </div>
-		 #} 
+	
+  <div class="mb-3">	
+  <a href="{{ path('delete_account' ) }}" class="button">supprimer mon compte</a>
+				
+</div></div>
 {% endblock %}

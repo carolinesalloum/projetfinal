@@ -14,20 +14,20 @@ Vous pouvez regarder notre séléctions de
  
  {% for category in categories  %}
 {% if category.title is same as ('Chansons')%}
-<a href="{{ path('index_category',{'categoryId': category.id }) }}">Chansons </a><img src="{{ asset('assets/images/flaticon/guitar.png')}}"style="height: 25px;">
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">Chansons </a>
 {% endif %}
 {% endfor %}
 et
 {% for category in categories  %}
 {% if category.title is same as ('Histoires')%}
-<a href="{{ path('index_category',{'categoryId': category.id }) }}">Histoires</a><img src="{{ asset('assets/images/flaticon/book.png')}}"style="height: 25px;">
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">Histoires</a>
 {% endif %}
 {% endfor %}
 <br>
-On a pas oublié les<span class="text-danger"> petits artistes</span> qui adore la 
+On n'a pas oublié les<span class="text-danger"> petits artistes</span> qui adorent la 
 {% for category in categories  %}
 {% if category.title is same as ('Coloriage')%}
-<a href="{{ path('index_category',{'categoryId': category.id }) }}">Coloriage </a><img src="{{ asset('assets/images/flaticon/palette.png')}}"style="height: 25px;">
+<a href="{{ path('index_category',{'categoryId': category.id }) }}">Coloriage </a>
 {% endif %}
 {% endfor %}
 </p></div>

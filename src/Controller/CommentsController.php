@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 
-use App\Entity\User;
+
 use DateTimeImmutable;
 use App\Entity\Comments;
 use App\Form\CommentsType;
@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommentsController extends AbstractController
@@ -28,7 +27,7 @@ class CommentsController extends AbstractController
      */
     public function index(CommentsRepository $commentsRepository,CategoryRepository $categoryRepository ): Response
     {   
-        //on récupère les comments qui ont été déja acceptés par l'Admin
+        //on récupère les comments qui ont été déja acceptés par l'Admin (page de Témoingage)
         $comments = $commentsRepository->findBy(['active' => 1]);
     // on récupère les catégories
         $categories = $categoryRepository->findAll();
@@ -44,26 +43,30 @@ class CommentsController extends AbstractController
  * @Route("/comments/add", name="add_comment")
  *
  */
-public function addComment(Request $request, EntityManagerInterface $manager, CategoryRepository $categoryRepository, UserRepository $userRepository ): Response
+public function addComment(Request $request, EntityManagerInterface $manager ): Response
 {
-    //on récupère le user
+    // `$this->getUser()` est une méthode utilisée pour récupérer l'utilisateur actuellement authentifié 
+    // Cette méthode est fournie par le composant Sécurité de Symfony et renvoie un objet utilisateur si l'utilisateur est authentifié, ou `null` s'il n'y a pas d'utilisateur authentifié.
     $user= $this->getUser();
-    //on protège cette route par données la possibilité de (contacter) jusque aux utilisateurs après avoir connectées
+    //on protège cette route par donnéer la possibilité de (contacter) que aux utilisateurs après avoir connectées
     if (!$user) {
         //si l'utilisateur n"est pas connecté on envoi une message et on le dirige vers la page de connexion 
         $this->addFlash('danger', 'Veuillez vous connecter pour ajouter un commentaire.');
         return $this->redirectToRoute('app_login');
     }
     
-    $categories = $categoryRepository->findAll();
+    
     //pour ajouter une commentaire , il faut instencier un objet comment
     $comment = new Comments();
-    
+    //ccréation de formulaire en lien avec entité Comment 
     $commentForm = $this->createForm(CommentsType::class, $comment);
+    //traiter les données par handle request 
     $commentForm->handleRequest($request);
-
+    //vérifier que le form est valid et remplie
     if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-        $comment->setActive(false);
+        
+        $comment->setActive(false);//par cet étape on empêche les commentairs d'appraître sans la permission de l'Admin 
+
         $comment->setCreatedAt(new DateTimeImmutable());
          $comment->setUser($this->getUser());
        
@@ -77,42 +80,13 @@ public function addComment(Request $request, EntityManagerInterface $manager, Ca
     }
 
     return $this->render('comments/addcomments.html.twig', [
-        'categories' => $categories,
+      
         'commentForm' => $commentForm->createView(),
         
     ]);
 }
 
-// /**
-//  * @Route("/comments/edit", name="edit_comment")
-//  */
-// public function editComment(Request $request , CategoryRepository $categoryRepository,EntityManagerInterface $em , CommentsRepository $comment): Response
-// {$categories = $categoryRepository->findAll();
-//     // $this->denyAccessUnlessGranted('comment_edit', $comment);
-//     $comment = new Comments;
-//     $form = $this->createForm(CommentsType::class, $comment);
 
-//     $form->handleRequest($request);
-
-//     if($form->isSubmitted() && $form->isValid()){
-//         $comment->setActive(false);
-//         $comment->setContent($form->get('content')->getData());
-        
-//         // $em = $this->getDoctrine()->getManager();
-//         $em->persist($comment);
-//         $em->flush();
-
-//         return $this->redirectToRoute('account');
-//         $this->addFlash(
-//            'success','success','vtre avis a bien été modifié');
-//     }
-
-//     return $this->render('comments/edit-comments.html.twig', [
-//         'form' => $form->createView(),
-//         'comment' => $comment,
-//         'categories' => $categories,
-//     ]);
-// }
 
 
 

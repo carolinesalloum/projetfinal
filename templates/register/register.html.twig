@@ -6,7 +6,7 @@
 
 
 <div class="container-connexion">
-			<h2 class="text-center">INSCRIPTION</h2>
+			<h2 class="text-center h2connexion">INSCRIPTION</h2>
 			<div class="formsection">
 			
 			{{ form_start(userForm) }}
@@ -15,7 +15,8 @@
 			{{ form_row(userForm.age) }}
 			{{ form_row(userForm.password) }}
 			{{ form_row(userForm.confirmPassword) }}
-
+			{{ form_row(userForm.agreeTerms) }}
+			
 				<a href="{{ path('register') }}"><input type="submit"  name="submit" value="S'inscrire" /></a>
 			
 			{{ form_end(userForm) }}

@@ -5,9 +5,15 @@
 {% block body %}
 <!-- home section start -->
 
-      
-     
-  <section class="home  m-5  d-flex justify-content-center">
+
+{% if app.user and app.user.isVerified == false %}
+<div class="alert alert-danger text-center" role="alert">
+				<div class="alert-message">
+					<strong>Votre compte n'est pas activé,veuillez vérifier votre boîte de réception</strong>
+				</div>
+			</div>
+{% endif %}
+  <div  class="home  m-5  d-flex justify-content-center">
   <img src="{{ asset('assets/images/b.jpg') }}" alt="" class="img-fluid">
     <div class="content ">
      
@@ -15,7 +21,7 @@
 
     </div>
 
-  </section>
+  </div >
 
   <!-- home section end -->
 
@@ -51,20 +57,21 @@
   <div class=" abonner-section bg-light">
 
     <div class="container-abonner">
-      <div class="row-abonner m-5">
-        <div class=" col-md-6 mb-5 mb-md-0">
-          <img src="{{asset('assets/images/abonner.jpg')}}" alt="ImageInsciption" class=" img-fluid">
+    
+      <div class="row row-abonner  ">
+        <div >
+          <img src="{{asset('assets/images/ludique.jpg')}}" alt="ImageInsciption" width="700">
         </div>
-        <div class="write-section col-md-5 py-5 ">
+        <div class="write-section col-lg-6 col-md-12 py-5 ">
           <h3 class="text-black p-3">Apprendre et Jouer Avec Nous!</h3>
-          <img src="{{asset('assets/images/abonner.jpg')}}" alt="ImageInscription" class="coco img-fluid">
+        
           <p >Apprenez l'arabe pour les enfants en ligne grâce aux vidéos, chansons, histoires , et plain des activités pratiques.
 
             Grâce à notre méthode d'auto-apprentissage, les enfants peuvent apprendre l'arabe à leur rythme,
             n'importe quand, n'importe où.
             Rejoignez nous pour commencer votre apprentissage !</p>
           <div class="btn-abonnez p-3">
-            <a href="{{ path('register')}}" class="button py-4 ">M'inscrire</a>
+            <a href="{{ path('register')}}" class="button  ">M'inscrire</a>
           </div>
         </div>
       </div>
@@ -97,10 +104,10 @@
         
         <div class=" card-body col-lg-3  ">
           <div class="package  text-center " id="card2">
-            <span class="img-wrap"><img src="assets/images/flaticon/party.png" alt="Image" class="img-fluid"></span>
+            <span class="img-wrap"><img src="{{asset('assets/images/flaticon/party.png')}}" alt="Image" class="img-fluid"></span>
             {% for category in categories %}
           {% if category.title is same as ('Chansons') %}
-            <a href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a>
+            <p><a href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a></p>
             {% endif %} 
           {% endfor %}
           </div>
@@ -123,69 +130,22 @@
 
   <!-- form contact start -->
  
-<section class="sec1 mb-2">
+<div class="sec1 mb-2">
 <div class="content">
 <a href="{{ path('app_contact')}}" class="text-decoration-none">
 <h1 class="text-center text-light py-3 ">Contactez-Nous</h1>
-<img class"content img-contact" src="assets/images/contactus.jpg" alt="" style="height: 250px;">
+<img class="content img-contact" src="assets/images/contact.jpg" alt="contactez-nous" style="height: 350px;">
 </a>
 </div>
-</section>
-<section class="sec2 mb-2 "></section>
+</div >
+<div  class="sec2 mb-2 "></div >
 
 
   <!-- form contact end -->
 
 
 
-  {# slider  #}
-   
-            
-   {# <section class="testimonial text-center">
-      <div class="container">
-        <div class="heading">Testimonial</div>
-         
-         <div id="testimonial4"
-          class="carousel slide testimonial4_indicators testimonial4_control_button thumb_scroll_x swipe_x"
-          data-ride="carousel"
-          data-pause="hover"
-          data-interval="5000"
-          data-duration="2000">
-        
-          <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-            
-              <div class="testimonial4_slide">{% for comment in comments %}
-               
-                <h4>{{ comment.user.nickname }}</h4>
-                <p>
-                 {{comment.content }}
-                </p>
-              </div>{% endfor %}
-              
-            </div>
-            
-          </div>
-          <a
-            class="carousel-control-prev"
-            href="#testimonial4"
-            data-slide="prev"
-          >
-            <span class="carousel-control-prev-icon"></span>
-          </a>
-          <a
-            class="carousel-control-next"
-            href="#testimonial4"
-            data-slide="next"
-          >
-            <span class="carousel-control-next-icon"></span>
-          </a>
-        </div>
-      </div>
-    </section>
-    <!-- partial -->
-    #}
-   
+ 
 
 
 {% endblock %}

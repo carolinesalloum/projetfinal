@@ -11,12 +11,14 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="un compte existe déjà")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -68,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="user")
      */
+    
     private $comments;
 
     /**
@@ -90,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->resetToken;
     }
-
+  //setResetToken est une méthode qui  permet de définir la valeur du jeton de réinitialisation.
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;

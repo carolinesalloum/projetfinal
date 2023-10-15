@@ -6,9 +6,12 @@
 namespace App\Controller;
 
 
+use App\Repository\UserRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -22,25 +25,25 @@ class SecurityController extends AbstractController
      *
      * @Route("/login", name="app_login")
      */
-
-    public function login(AuthenticationUtils $authenticationUtils, CategoryRepository $categoryRepository): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     { //la condition nous permet de savoire si un utilisateur est connecté ou pas
         //  if ($this->getUser()) {
         //      return $this->redirectToRoute('target_path');
         //  }
-        $categories = $categoryRepository->findAll();
+        
+       
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         //  pour récupérer le dernier nom qui été utilisé par l'utilisateur
-        $lastUsername = $authenticationUtils->getLastUsername();
+         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render(
             'security/login.html.twig',
             [
-                'last_username' => $lastUsername,
+                 'last_username' => $lastUsername,
                 'error' => $error,
-                'categories' => $categories,
+                
 
             ]
         );

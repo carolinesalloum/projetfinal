@@ -18,7 +18,7 @@ class ContactType extends AbstractType
             [
                 'label'=> "Votre Email",
             'attr'=> [
-                'class'=> 'form-control mb-3',
+                'class'=> ' mb-3',
                 
             ]
             ])
@@ -26,8 +26,8 @@ class ContactType extends AbstractType
             [
                 'label'=> "Votre Message",
                 'attr'=> [
-                    'class'=> 'form-control',
-                    'style' => 'width:300px;height:300px;font-size:25px;',
+                    
+
                     'minlength'=> '50',
                     'maxlength'=> '400',
                 ]

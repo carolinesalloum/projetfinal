@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\ChangePasswordType;
-use App\Service\SendMailService;
 use App\Repository\UserRepository;
 use App\Form\ResetPasswordFormType;
 use App\Repository\CategoryRepository;
@@ -26,21 +24,15 @@ class ResetPasswordController extends AbstractController{
      *
      * @Route("/oubli-pass", name="forgotten_password")
      */
-    public function forgottenPassword(
-        Request $request,
-        UserRepository $usersRepository,
-        TokenGeneratorInterface $tokenGenerator,
-        EntityManagerInterface $entityManager,
-
-        MailerInterface $mailer ,
-        CategoryRepository $categoryRepository
-    ): Response
+    public function forgottenPassword( Request $request,UserRepository $usersRepository, TokenGeneratorInterface $tokenGenerator,
+    EntityManagerInterface $entityManager,MailerInterface $mailer ): Response
     {
-        $categories = $categoryRepository->findAll();
+        
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         //récupérer les donnée de formulaire
         $form->handleRequest($request);
         //dd($form);
+        // on vérifie si le formulaire est remplie et valide
         if($form->isSubmitted() && $form->isValid()){
             //On va chercher l'utilisateur par son email
             $user = $usersRepository->findOneByEmail($form->get('email')->getData());
@@ -51,8 +43,10 @@ class ResetPasswordController extends AbstractController{
                 // On génère un token de réinitialisation pour identifier l'utilisateur
             $token = $tokenGenerator->generateToken();
            //dd($token);
-            
+            //setResetToken est une méthode existe dans l'entité user qui nous permet de définir la valeur du jeton de réinitialisation.
             $user->setResetToken($token);
+            // Cette ligne indique à EntityManager de commencer à suivre l'objet $user ,cela signifie que toutes les modifications apportées à cet objet seront enregistrées dans la base de données lorsque vous appellerez 
+            //ultérieurement$entityManager->flush()
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -60,10 +54,11 @@ class ResetPasswordController extends AbstractController{
                 $url = $this->generateUrl('reset_pass', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);//absouloute :url complette 
                 
                 // On crée les données du mail
-                // $context = compact('url', 'user');
+                //on cherche l'utilisateur
                 $userMail = $user->getEmail();
-                $email = (new TemplatedEmail())// pour definir le centenue de notre email avec twig ,on utlilise la class TemplatedEmail() 
-                ->from('alsalloumcaroline@gmail.com')
+                // pour definir le centenue de notre email avec twig ,on utlilise la class TemplatedEmail() 
+                $email = (new TemplatedEmail())
+                ->from('info@francoarabophone.fr')
                 ->to($userMail)
                 ->subject('Réinitialisation de mot de passe')
                 ->htmlTemplate('emails/reset_pass.html.twig')// path of the Twig template to render
@@ -87,7 +82,7 @@ class ResetPasswordController extends AbstractController{
 
         return $this->render('reset_password/request.html.twig', [
             'requestPassForm' => $form->createView(),
-            'categories' => $categories
+           
         ]);
     }
 /**
@@ -102,12 +97,12 @@ class ResetPasswordController extends AbstractController{
         Request $request,
         UserRepository $usersRepository,
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher,
-        CategoryRepository $categoryRepository
+        UserPasswordHasherInterface $passwordHasher
+       
     ): Response
     { //on a besoin de cette méthode pour générer le lien de réinstallation le mot de pass
         
-        $categories = $categoryRepository->findAll();
+    
         // On vérifie si on a ce token dans la base
         $user = $usersRepository->findOneByResetToken($token);
         // On vérifie si on a un utilisateur
@@ -136,7 +131,7 @@ class ResetPasswordController extends AbstractController{
 
             return $this->render('reset_password/reset.html.twig', [
                 'resetForm' => $form->createView(),
-                'categories' => $categories
+               
             ]);
         }
         $this->addFlash('danger', 'Jeton invalide');

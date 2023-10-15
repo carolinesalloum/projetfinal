@@ -22,8 +22,8 @@ class CommentsType extends AbstractType
                 'attr'=> [
                     'class'=> 'form-control',
                     'style' => 'width:400px;height:300px;font-size:25px;display:flex;justify-content:center;',
-                    'minlength'=> '100',
-                    'maxlength'=> '400',
+                    'minlength'=> '20',
+                    'maxlength'=> '300',
                 ]  
             ]) 
             ;
