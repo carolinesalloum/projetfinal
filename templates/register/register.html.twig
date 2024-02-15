@@ -14,9 +14,14 @@
 			{{ form_row(userForm.email) }}
 			{{ form_row(userForm.age) }}
 			{{ form_row(userForm.password) }}
-			{{ form_row(userForm.confirmPassword) }}
-			{{ form_row(userForm.agreeTerms) }}
+			{# {{ form_row(userForm.confirmPassword) }} #}
 			
+			
+        {{ form_row(userForm.acceptedTerms) }}
+		 {{ form_row(userForm.agreepolitique) }}
+			 
+           
+
 				<a href="{{ path('register') }}"><input type="submit"  name="submit" value="S'inscrire" /></a>
 			
 			{{ form_end(userForm) }}

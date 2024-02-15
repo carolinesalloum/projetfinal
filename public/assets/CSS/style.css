@@ -217,9 +217,11 @@ border:2px solid  #219EE2;
   width: 95%;
   margin: 70px auto;
   border-radius: 10px;
+  background-color: #F6F5F5;
   opacity: 0.9;
- 
   }
+
+  
   .card-category{
   /* margin:2px  ; */
   background: #F8F9FA;
@@ -550,7 +552,7 @@ margin: 1rem auto;
   box-shadow:  rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
-.container
+
 
 
 
@@ -695,7 +697,16 @@ flex-direction: column;
   padding-top: 30px;
   margin: 20px;
 }
-
+.container-alert{
+  height:25vh ;
+  width: 30vw;
+  border-radius: 10px
+}
+.container-page-alert{
+  height: 70vh;
+  width: 100%;
+  
+}
 
 /************************responsive***************/
 @media only screen and (max-width: 1200px){

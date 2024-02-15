@@ -9,7 +9,7 @@
             
         {% for product in products %}
      {% if product.type.title is same as ('PDF')  %}
-     <div class="card-category  my-2  ">
+     <div class="card-category  my-2 mx-2 ">
         <div class="card-body ">
         <embed src="{{ asset('upload/') }}{{product.file}}">
         <a class="pdf" href="{{ asset('upload/') }}{{product.file}}">{{product.title}} </a>

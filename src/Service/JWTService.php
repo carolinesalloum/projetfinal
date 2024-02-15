@@ -5,7 +5,7 @@ use DateTimeImmutable;
 
 class JWTService
 {
-    // on génère lo token par cette service
+    // on génère le token par cette service
     /**
      * génération du JWT
      * @param array $header
@@ -39,7 +39,7 @@ class JWTService
         $secret = base64_encode($secret);//encoder la secret
         $signature = hash_hmac('sha256',$base64Header . '.' . $base64Payload, $secret , true);// faire le hash avec certain algorithme
     $base64Signature = base64_encode($signature);// encoder la signateur en base64
-    $base64Signature = str_replace(['+','/','='],['-','_',''],$base64Signature);//toyer les valeurs encodeés
+    $base64Signature = str_replace(['+','/','='],['-','_',''],$base64Signature);//netoyer les valeurs encodeés
 
         //on crée le token
         $jwt = $base64Header . '.' .$base64Payload . '.' . $base64Signature;
@@ -66,7 +66,7 @@ class JWTService
         $array = explode('.', $token);
 
         // On décode le Payload
-        $payload = json_decode(base64_decode($array[1]), true);//array[0] pour le payload
+        $payload = json_decode(base64_decode($array[1]), true);//array[0] pour le header
 
         return $payload;
     }

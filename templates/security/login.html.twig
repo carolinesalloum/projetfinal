@@ -5,17 +5,17 @@
 
 {% block body %}
 	{% if error %}
-		<div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		<div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security')|raw }}</div>
 
 	{% endif %}
 
-	{# {% if app.user %}
+	 {% if app.user %}
 		<div class="mb-3">
 			Vous êtes connecté(e) comme
 			{{ app.user.userIdentifier }},
-			<a href="{{ path('app_logout') }}">Me déconnecter</a>
+		
 		</div>
-	{% endif %} #}
+	{% endif %} 
 	<h2 class="text-center h2connexion ">CONNECTEZ-VOUS</h2>
 	<div class="container-connexion">
 		

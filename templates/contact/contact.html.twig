@@ -14,14 +14,12 @@
 <div class="formsection" >
 
  {{ form_start(form) }}
-                      <fieldset class="mb-3">
-                        <legend> </legend>
-
- {{ form_row(form.mail) }}
+<fieldset class="mb-3">
+                       
  {{ form_row(form.content) }}
  </fieldset>
  </div>
-  {# <a class="d-flex justify-content-center text-decoration-none mt-4" href="{{ path('app_contact')}}"><input type="submit" vlaue="envoyer" ></a> #}
+ 
   <button type="submit" class="button">envoyer</button>
   {{ form_end(form) }}
  

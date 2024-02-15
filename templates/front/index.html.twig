@@ -92,7 +92,7 @@
       
         <div class=" card-body col-lg-3   ">
           <div class="package  text-center " id="card1">
-            <span class="img-wrap"><img src="assets/images/flaticon/pere.png" alt="Image" class="img-fluid"></span>
+            <span class="img-wrap"><img src="assets/images/flaticon/pere.png" alt="Imagecoloriage" class="img-fluid"></span>
             {% for category in categories %}
           {% if category.title is same as ('Coloriage') %}
     
@@ -104,7 +104,7 @@
         
         <div class=" card-body col-lg-3  ">
           <div class="package  text-center " id="card2">
-            <span class="img-wrap"><img src="{{asset('assets/images/flaticon/party.png')}}" alt="Image" class="img-fluid"></span>
+            <span class="img-wrap"><img src="{{asset('assets/images/flaticon/party.png')}}" alt="Imagechanson" class="img-fluid"></span>
             {% for category in categories %}
           {% if category.title is same as ('Chansons') %}
             <p><a href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a></p>
@@ -114,7 +114,7 @@
         </div>
         <div class=" card-body col-lg-3  ">
           <div class="package  text-center  " id="card3">
-            <span class="img-wrap"><img src="assets/images/flaticon/histoires.png" alt="Image" class="img-fluid"></span>
+            <span class="img-wrap"><img src="assets/images/flaticon/histoires.png" alt="Imagehistoire" class="img-fluid"></span>
           {% for category in categories %}
           {% if category.title is same as ('Histoires') %}
             <p><a href="{{ path('index_category',{'categoryId': category.id }) }}" class="button  mt-4">{{ category.title }}</a></p>

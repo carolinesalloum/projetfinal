@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
 
     
 
-    /**
+      /**
      * @Route("/register", name="register")
      */
     public function registerUser(Request $request, LoginAuthentificator $authenticator,UserAuthenticatorInterface $userAuthenticator,EntityManagerInterface $manager, UserPasswordHasherInterface $passHasher, MailerInterface $mailer,JWTService $jwt): Response
@@ -94,6 +94,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/verify/{token}", name="verify_email")
      */
@@ -119,6 +120,57 @@ class RegistrationController extends AbstractController
         $this->addFlash('danger', 'Le token est invalide ou a expiré');
         return $this->redirectToRoute('app_login');
     }
+//   /**
+//      * @Route("/resendverif", name="resend_verif")
+//      */
+  
+//     public function resendVerif(JWTService $jwt, MailerInterface $mailer, UserRepository $userRepository): Response
+//     {
+//         $user = $this->getUser();
+
+//         if(!$user){
+//             $this->addFlash('danger', 'Vous devez être connecté pour accéder à cette page');
+//             return $this->redirectToRoute('app_login');    
+//         }
+
+//         if($user->getIsVerified()){
+//             $this->addFlash('warning', 'Cet utilisateur est déjà activé');
+//             return $this->redirectToRoute('account');    
+//         }
+
+//         // On génère le JWT de l'utilisateur
+//         // On crée le Header
+//         $header = [
+//             'typ' => 'JWT',
+//             'alg' => 'HS256'
+//         ];
+
+//         // On crée le Payload
+//         $payload = [
+//             'user_id' => $user->getId()
+//         ];
+
+//         // On génère le token
+//         $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
+//         $userMail = $user->getEmail();
+//         // On envoie un mail
+//         $email = (new TemplatedEmail())//instancier un nouveau mail ù00
+        
+//         ->from('info@francoarabophone.fr')
+//         ->to($userMail)
+//         ->subject('Activer votre compte')
+//         ->htmlTemplate('emails/registration.html.twig')//Indique le modèle Twig utilisé pour le contenu de l'e-mail
+//         ->context([   //Fournit des données à utiliser dans le modèle Twig
+//           'user' => $user->getNickname(),
+//           'token' => $token
+//       ]);
+         
+
+//       $mailer->send($email);
+     
+//         $this->addFlash('success', 'Email de vérification a été envoyé');
+//         return $this->redirectToRoute('app_index');
+//     }
 
      }
 

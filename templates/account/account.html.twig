@@ -16,8 +16,9 @@
 			{{ app.user.nickname }}
 		</h2>
 		<div class="profile-info">
-			<div class="profile-name">
-				<p>Prenom</p>
+			<div class="p
+			rofile-name">
+				<p>Pseudo</p>
 				<p class="name">{{ app.user.nickname }}</p>
 			</div>
       <hr>
@@ -38,7 +39,8 @@
 						{{ comment.content }}
 						
 					</p>
-				{% endfor %}
+  						<a href="{{ path('delete_comment' ) }}" class="button">supprimer le commentaire</a>
+					{% endfor %}
 				
 				</div>
 			

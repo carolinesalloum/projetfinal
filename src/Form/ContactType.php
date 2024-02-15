@@ -14,14 +14,7 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('mail',EmailType::class,
-            [
-                'label'=> "Votre Email",
-            'attr'=> [
-                'class'=> ' mb-3',
-                
-            ]
-            ])
+            
             ->add('content',TextareaType::class,
             [
                 'label'=> "Votre Message",
@@ -30,6 +23,7 @@ class ContactType extends AbstractType
 
                     'minlength'=> '50',
                     'maxlength'=> '400',
+                    'style' => 'height :400px;'
                 ]
 
             ])

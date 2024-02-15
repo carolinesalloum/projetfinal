@@ -9,12 +9,12 @@
         {% for product in products %}
      {% if product.category.title is same as ('Leçons')  %}
 
-     <div class="card-category  mx-4  ">
+     <div class="card-category  mx-4 my-4  ">
         <div class="card-body ">
         
         <iframe width="300" height="300" src="{{ product.file }}"></iframe>
           <div class="btn-card">
-            <a href="" class="button m-4">{{ product.title }}</a>
+            <a href="{{ product.file }}" class="button m-4">{{ product.title }}</a>
             </div>
         </div>
         </div> 

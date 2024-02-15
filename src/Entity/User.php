@@ -14,7 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="un compte existe déjà")
+ * @UniqueEntity(fields={"email"}, message="Cet e-mail est déjà utilisé.")
+ *  @UniqueEntity(fields={"nickname"}, message="Ce pseudo est déjà utilisé.")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -31,15 +32,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $email;
     
-
-    /**
+/**
      * @ORM\Column(type="string", length=255)
-     * @Assert\EqualTo(propertyPath="confirmPassword", message="Les mots de passe ne correspondent pas")
+     *
      */
     private $password;
+  
 
-
-    public $confirmPassword;
 
     /**
      * @ORM\Column(type="json")
@@ -48,6 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $nickname;
 

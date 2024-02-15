@@ -39,7 +39,7 @@ class MainController extends AbstractController
     */
     public function indexCategory($categoryId, CategoryRepository $categoryRepository): Response
     {
-        
+        $categories = $categoryRepository->findAll();
       // nous recherchons la Category qui nous intéresse. Si celle-ci n'existe pas, nous retournons à l'index
         $category = $categoryRepository->findOneBy(['id' => $categoryId]);
         if (!$category) {
@@ -50,6 +50,7 @@ class MainController extends AbstractController
             return $this->render('front/listcategory.html.twig', [
                 'products' => $products,
                'category' => $category,
+               'categories' => $categories,
             ]);
             
     
@@ -60,8 +61,9 @@ class MainController extends AbstractController
     * @Route("/level/{levelId}", name="index_level")
     */
     // on affiche les produits selon les niveaux (levels )
-    public function indexLevel( LevelRepository $levelRepository, $levelId): Response
+    public function indexLevel( LevelRepository $levelRepository, $levelId,CategoryRepository $categoryRepository): Response
     {
+        $categories = $categoryRepository->findAll();
     //On récupère chaque level selon son Id
        $level=$levelRepository->find($levelId);
         //Maintenant que nous avons le level, nous récupérons les Products qui lui sont associés
@@ -70,7 +72,7 @@ class MainController extends AbstractController
         return $this->render('front/listlevel.html.twig', [
             'level' => $level,
             'products' => $products,
-           
+            'categories' => $categories,
             
         ]);
 
@@ -128,4 +130,22 @@ class MainController extends AbstractController
         
         return $this->render('front/qui-suis-je.html.twig');
     }
+
+     /**
+    * @Route("/politique", name="politique")
+    */
+    //pour afficher la page mentions légales
+    public function indexPolitique(): Response
+    {
+        
+        return $this->render('front/politique.html.twig');
+    }
+    //  /**
+    // * @Route("/compte-non-valide", name="nonvalide")
+    // */
+    // public function nonValide(): Response
+    // {
+    //     return $this->render('_partiels/nonValidecompte.html.twig');
+    // }
+    
 }

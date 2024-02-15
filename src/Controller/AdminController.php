@@ -157,7 +157,7 @@ class AdminController extends AbstractController
         if (!$product) {
             return $this->redirectToRoute('admin_backoffice');
         }
-        // on récupère ses donnés de la BDD
+        // // $productForm est un objet instance de Form
         $productForm = $this->createForm(ProductType::class, $product, ['link' => true]);//link =< true cet à dire mode modification
         //On applique la méthode handleRequest sur notre formulaire, les données du formulaire seront traités
         $productForm->handleRequest($request);

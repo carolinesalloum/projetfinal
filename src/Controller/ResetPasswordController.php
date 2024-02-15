@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Form\ResetPasswordFormType;
-use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -29,7 +28,7 @@ class ResetPasswordController extends AbstractController{
     {
         
         $form = $this->createForm(ResetPasswordRequestFormType::class);
-        //récupérer les donnée de formulaire
+        //traiter  les donnée de formulaire
         $form->handleRequest($request);
         //dd($form);
         // on vérifie si le formulaire est remplie et valide
@@ -61,8 +60,9 @@ class ResetPasswordController extends AbstractController{
                 ->from('info@francoarabophone.fr')
                 ->to($userMail)
                 ->subject('Réinitialisation de mot de passe')
-                ->htmlTemplate('emails/reset_pass.html.twig')// path of the Twig template to render
-                ->context([ // pass variables (name => value) to the template
+                ->htmlTemplate('emails/reset_pass.html.twig')// Indique le modèle Twig utilisé pour le contenu de l'e-mail
+                ->context([ //Fournit des données à utiliser dans le modèle Twig
+                    // pass variables (name => value) to the template
                     'url' => $url,
                     'user' => $user->getNickname(),
                 ])
@@ -109,7 +109,7 @@ class ResetPasswordController extends AbstractController{
         if($user){
 
             $form = $this->createForm(ResetPasswordFormType::class);
-            //récupérer les donnée de formulaire
+            //traiter les donnée de formulaire
             $form->handleRequest($request);
 
             if($form->isSubmitted() && $form->isValid()){
