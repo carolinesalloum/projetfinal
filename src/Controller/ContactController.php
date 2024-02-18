@@ -20,45 +20,60 @@ class ContactController extends AbstractController
     public function contactApp(Request $request, MailerInterface $mailer ,Contact $contact = null, EntityManagerInterface $manager): Response
     {
         //MailerInterface est une interface fournie par le composant Mailer de Symfony. Il définit le contrat d'envoi des emails.
-        //Une instance de l'entité Contact est créée.Celui-ci sera utilisé pour stocker les données du formulaire de contact.
-        $contact =new contact;
-        //on récupère l'utilisateur authentifié
+    
+
+          //on récupère l'utilisateur authentifié
         $user= $this->getUser();
-        //Il vérifie s'il existe un utilisateur authentifié. Si ce n'est pas le cas, 
-        //il ajoute un message flash indiquant que l'utilisateur doit être connecté et redirige vers la page de connexion
+
+        // Vérifie si l'utilisateur est connecté
         if (!$user) {
             $this->addFlash('danger', 'Veuillez vous connecter pour nous contacter.');
             return $this->redirectToRoute('app_login');
         }
+        // Vérifie si l'utilisateur est vérifié
+    //     if (!$user->getIsVerified()) {
+    //         return $this->redirectToRoute('nonvalide');
+    // }
+    // Crée une nouvelle instance de l'entité Contact
+        $contact =new contact;
       
-        // $contactRepo = $repo->findAll();
-        // dd($contactRepo);
-        //Un formulaire est créé à l'aide du type de formulaire ContactType. Ce formulaire est utilisé pour collecter des informations de contact.
+      // Crée le formulaire en utilisant le type de formulaire ContactType
         $form = $this->createForm(ContactType::class, $contact);
-        // La méthode handleRequest est appelée sur le formulaire pour traiter la soumission du formulaire.
+
+        // Traite la soumission du formulaire
         $form->handleRequest($request);
-        // condition de soumission et de validité du formulaire
+
+        // Vérifie si le formulaire a été soumis et est valide
         if($form->isSubmitted() && $form->isValid()){
 
-              // On demande au manager de préparer la requête
+           // Persiste l'entité Contact dans la base de données
             $manager->persist($contact);
-            //  On execute
+
+          // Exécute la requête
             $manager->flush();
 
-            $content = $contact->getContent();//  récupérer le contenu du message de contact soumis via le formulaire de contact.
-            $userMail = $this->getUser()->getUsername();// utilisé pour récupérer l'adresse e-mail de l'utilisateur actuellement authentifié.
+             // Récupère le contenu du message de contact soumis via le formulaire
+            $content = $contact->getContent();
+
+                // Récupère l'adresse e-mail de l'utilisateur actuellement authentifié
+            $userMail = $this->getUser()->getUsername();
             // dd($userMail);
+             // Crée un objet Email pour envoyer le message
             $email = (new Email())
             ->from($userMail)
             ->to('info@francoarabophone.fr')
             ->subject('Demand de contact')
             ->text($content);
-            
-        $mailer->send($email);//envoyer le mail
+
+          //envoyer le mail  
+        $mailer->send($email);
+         // Ajoute un message flash pour indiquer que le message a été envoyé avec succès
         $this->addFlash('success','votre message a été envoyé');
-        //Après le transfert de notre Entity User, on retourne sur le login
+
+        // Redirige vers la page d'accueil
         return $this->redirectToRoute('app_index');
         }
+        // Rend le formulaire dans le template
         return $this->renderForm('contact/contact.html.twig', [
             'form' => $form,
             

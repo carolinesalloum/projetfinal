@@ -90,9 +90,8 @@ class ResetPasswordController extends AbstractController{
      *
      * @Route("/oubli-pass/{token}", name="reset_pass")
      */
-    
-
-    public function resetPass(
+  
+    public function resetPass(//on a besoin de cette méthode pour générer le lien de réinstallation le mot de pass
         string $token,
         Request $request,
         UserRepository $usersRepository,
@@ -100,7 +99,7 @@ class ResetPasswordController extends AbstractController{
         UserPasswordHasherInterface $passwordHasher
        
     ): Response
-    { //on a besoin de cette méthode pour générer le lien de réinstallation le mot de pass
+    { 
         
     
         // On vérifie si on a ce token dans la base
@@ -111,30 +110,33 @@ class ResetPasswordController extends AbstractController{
             $form = $this->createForm(ResetPasswordFormType::class);
             //traiter les donnée de formulaire
             $form->handleRequest($request);
-
+            //vérifier que le formulaire est existe et valide
             if($form->isSubmitted() && $form->isValid()){
                 // On efface le token
                 $user->setResetToken('');
                 //encoder le mot de pass
                 $user->setPassword(
                     $passwordHasher->hashPassword(
-                        $user,
-                        $form->get('password')->getData()//chercher le mot de pass
-                    )
-                );
+                        $user, 
+                    $form->get('password')->getData()//chercher le mot de pass
+                 ));
                 $entityManager->persist($user);
                 $entityManager->flush();
-
+                 //ajouter un flash message et envoyer vers la page de login 
                 $this->addFlash('success', 'Mot de passe changé avec succès');
                 return $this->redirectToRoute('app_login');
             }
-
+            // si le formulaire n'existe pas on le présent à l'utilisateur 
             return $this->render('reset_password/reset.html.twig', [
                 'resetForm' => $form->createView(),
                
             ]);
         }
+        // si l'utilisateur n'exist pas on affiche un message d'erreur 
         $this->addFlash('danger', 'Jeton invalide');
+        //tourner vers la page d'accueil
         return $this->redirectToRoute('app_login');
     }
+
+
 }

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block body %}
+<div class="container-page-alert">
+<div class=" container-alert base_alert alert alert-danger alert-dismissible mx-auto mt-4 pt-4" role="alert">
+					
+					<div class="alert-message text-center">
+						<strong>Votre compte n'est pas activé.</strong><br>
+						<p>Veuillez activer votre Compte pour acceder à cette page</p>
+						<small>Vous voulez recevoir à nouveau un lien d'activation?</small><br>
+						 <a href="{{ path('resend_verif') }} ">cliquer ici!</a>
+					</div>
+				</div>
+    </div>
+    
+{% endblock %}

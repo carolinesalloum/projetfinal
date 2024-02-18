@@ -9,13 +9,13 @@
 
 	{% endif %}
 
-	 {% if app.user %}
+	 {# {% if app.user %}
 		<div class="mb-3">
 			Vous êtes connecté(e) comme
 			{{ app.user.userIdentifier }},
 		
 		</div>
-	{% endif %} 
+	{% endif %}  #}
 	<h2 class="text-center h2connexion ">CONNECTEZ-VOUS</h2>
 	<div class="container-connexion">
 		
@@ -29,7 +29,7 @@
 					<label class="pb-2" for="inputPassword">Mot de passe</label>
 					<input type="password" name="_password" placeholder="password" autocomplete="current-password" required/>
 				</div>
-				 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> 
+				 {# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">  #}
 				 {# csrf_token est implementer avec security bundle  #}
 				<button type="submit" class="button mt-4">Me connecter</button>
 				<div class="pt-4 pb-3 d-flex justify-content-center">

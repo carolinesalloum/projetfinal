@@ -17,37 +17,39 @@
 		</h2>
 		<div class="profile-info">
 			<div class="p
-			rofile-name">
+								rofile-name">
 				<p>Pseudo</p>
 				<p class="name">{{ app.user.nickname }}</p>
 			</div>
-      <hr>
+			<hr>
 			<div class="profile-email">
 				<p>Email</p>
 				<p class="email">{{ app.user.email }}</p>
 			</div>
-       <hr>
+			<hr>
 			<div class="profile-age">
 				<p>Age</p>
 				<p class="age">{{ app.user.age }}</p>
 			</div>
-       <hr>
+			<hr>
 			<div class="profile-avis">
 				<p>Mes Avis</p>
 				{% for comment in comments %}
 					<p class="avis">
 						{{ comment.content }}
-						
+
 					</p>
-  						<a href="{{ path('delete_comment' ) }}" class="button">supprimer le commentaire</a>
-					{% endfor %}
-				
-				</div>
-			
+					<a href="{{ path('delete_comment' ) }}" class="button">supprimer le commentaire</a>
+				{% endfor %}
+
+			</div>
+
 		</div>
-	
-  <div class="mb-3">	
-  <a href="{{ path('delete_account' ) }}" class="button">supprimer mon compte</a>
-				
-</div></div>
+
+		<div class="mb-3">
+			<a href="{{ path('delete_account' ) }}" class="button">supprimer mon compte</a>
+
+		</div>
+
+	</div>
 {% endblock %}

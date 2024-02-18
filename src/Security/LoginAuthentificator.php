@@ -54,11 +54,11 @@ class LoginAuthentificator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {//a méthode onAuthenticationSuccess gère la redirection après une authentification réussie. Elle vérifie si le compte de l'utilisateur est activé (commenté), puis tente de rediriger l'utilisateur vers le chemin cible s'il en existe un dans la session. Si aucun chemin cible n'est trouvé, elle redirige l'utilisateur vers la page d'accueil de l'application. La méthode getLoginUrl retourne l'URL de la page de connexion en cas d'échec de l'authentification.
 
-        //  // Check if the user's account is activated
+         // Check if the user's account is activated
         //  $user = $this->getUser();
-        //  if (!$user->getIsActivated()) {
+        //  if (!$user->getIsVerified()) {
         //      // Redirect to an inactive account page or show an error message
-        //      return new RedirectResponse($this->urlGenerator->generate('inactive_account'));
+        //      return new RedirectResponse($this->urlGenerator->generate('nonvalide'));
         //  }
 
     //    Redirection vers le Chemin Cible (Target Path) :récupérer le chemin cible (target path) enregistré dans la session.

@@ -12,7 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AccountController extends AbstractController
 {
-    /**
+    /** 
+     * 
      * @Route("/account", name="account")
      */
     public function index(CategoryRepository $categoryRepository ): Response
@@ -22,20 +23,22 @@ class AccountController extends AbstractController
         $categories = $categoryRepository->findAll();
         $user=$this->getUser();
 
-     if (!$user) {
-        throw $this->createNotFoundException('Utilisateur non trouvé');
-    }
+     if (!$user->getIsVerified()) {
+                return $this->redirectToRoute('nonvalide');
+     }
      $comments = $user->getComments();
-        // //à partir de notre user on récupère ses (avis) comments 
-        // $comments = $user->getComments();
+        // //à partir de notre user on récupère ses commentaires
+        
 
               return $this->render('account/account.html.twig', [
             'comments'=> $comments,
             'categories' =>$categories,
              'user' => $user,
         ]);
-    }
     
+    
+    
+}
     
      /**
      * @Route("/account/delete", name="delete_account")
@@ -77,3 +80,4 @@ class AccountController extends AbstractController
 
 
 }
+

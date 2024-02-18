@@ -29,16 +29,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\Email(message = "cet email '{{ value }}' n'est pas valide.")
      */
+   
     private $email;
     
-/**
+
+    /**
      * @ORM\Column(type="string", length=255)
-     *
+     * 
      */
     private $password;
-  
 
+
+    public $confirmPassword;
 
     /**
      * @ORM\Column(type="json")
@@ -47,7 +51,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
      */
     private $nickname;
 

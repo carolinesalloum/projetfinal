@@ -1,10 +1,11 @@
+{# cette page pour ajouter un commentaire #}
 {% extends 'base.html.twig' %}
 
 {% block title %}les Avis{% endblock %}
 
 {% block body %}
  
-		
+		{# afficher les flash message #}
         {% if app.flashes('error') is not empty %}
     <div class="alert alert-danger">
         {{ app.flashes('error') }}

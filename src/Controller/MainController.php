@@ -13,7 +13,8 @@ class MainController extends AbstractController
 {
    /**
     * @Route("/", name="app_index")
-    */
+    */ 
+    
     public function index( ProductRepository $productRepository, CategoryRepository $categoryRepository ,Levelrepository $levelRepository): Response
     {
         //Afficher les products, levels et categories dans la page d'acueille
@@ -39,9 +40,13 @@ class MainController extends AbstractController
     */
     public function indexCategory($categoryId, CategoryRepository $categoryRepository): Response
     {
+        //cette méthode affiche le category selon son id
+
+        //chercher tous les categories
         $categories = $categoryRepository->findAll();
       // nous recherchons la Category qui nous intéresse. Si celle-ci n'existe pas, nous retournons à l'index
         $category = $categoryRepository->findOneBy(['id' => $categoryId]);
+        // si le category n'existe pas ,reviens vers la page d'accueille
         if (!$category) {
             return $this->redirectToRoute('app_index');
         }
@@ -60,9 +65,10 @@ class MainController extends AbstractController
     /**
     * @Route("/level/{levelId}", name="index_level")
     */
-    // on affiche les produits selon les niveaux (levels )
+    
     public function indexLevel( LevelRepository $levelRepository, $levelId,CategoryRepository $categoryRepository): Response
     {
+        // dans cette methode on affiche les produits selon les niveaux (levels )
         $categories = $categoryRepository->findAll();
     //On récupère chaque level selon son Id
        $level=$levelRepository->find($levelId);
@@ -87,6 +93,7 @@ class MainController extends AbstractController
     public function indexMethode(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
     { //on a besoin de chercher les catégories et les produits
         $categories=$categoryRepository->findAll();
+        // cherecher tou les produits
         $products =  $productRepository->findAll();
         return $this->render('front/methode.html.twig', [
             'products' => $products,
@@ -102,7 +109,7 @@ class MainController extends AbstractController
     public function indexLudique(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
     {
         //on a besoin de chercher les catégories et les produits
-         $categories=$categoryRepository->findAll();
+         $categories = $categoryRepository->findAll();
         $products =  $productRepository->findAll();
         return $this->render('front/ludique.html.twig', [
             'products' => $products,
@@ -114,7 +121,7 @@ class MainController extends AbstractController
      /**
     * @Route("/legal", name="mentions")
     */
-    //pour afficher la page mentions légales
+    //pour afficher la page Conditions Générales d'Utilisation
     public function indexMention(): Response
     {
         
@@ -134,18 +141,20 @@ class MainController extends AbstractController
      /**
     * @Route("/politique", name="politique")
     */
-    //pour afficher la page mentions légales
+   
     public function indexPolitique(): Response
     {
+        // afficher la page de politique de protection des données 
         
         return $this->render('front/politique.html.twig');
     }
-    //  /**
-    // * @Route("/compte-non-valide", name="nonvalide")
-    // */
-    // public function nonValide(): Response
-    // {
-    //     return $this->render('_partiels/nonValidecompte.html.twig');
-    // }
+     /**
+    * @Route("/compte-non-valide", name="nonvalide")
+    */
+    public function nonValide(): Response
+    {
+        //afficher la page nonValidecompte quand le compte de l'utilisateur n'est pas activé 
+        return $this->render('_partiels/nonValidecompte.html.twig');
+    }
     
 }

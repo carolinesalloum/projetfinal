@@ -87,13 +87,13 @@ class RegistrationType extends AbstractType
                         'max' => 4096,
                        
                     ]),
-                //     new Regex([
-                //         'pattern' => " /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/ " ,
-                //           'message' => 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial'
-                // ]),
+                    new Regex([
+                        'pattern' => ' /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/ ' ,
+                          'message' => 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial'
+                ]),
 
                 ],
-                // 'invalid_message' => 'les deux mots de passe ne corresponde pas',
+                  'invalid_message' => 'les deux mots de passe ne corresponde pas',
             ])
             
             
