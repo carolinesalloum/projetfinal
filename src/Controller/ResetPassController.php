@@ -17,7 +17,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 
-class ResetPasswordController extends AbstractController{
+class ResetPassController extends AbstractController{
 /**
      *
      *
