@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Comments;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -19,12 +21,25 @@ class CommentsType extends AbstractType
             [
             
                 'label'=>'entrez votre avis',
+                
                 'attr'=> [
                     'class'=> 'form-control',
                     'style' => 'width:400px;height:300px;font-size:25px;display:flex;justify-content:center;',
-                    'minlength'=> '20',
-                    'maxlength'=> '300',
-                ]  
+                   
+                ]  ,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Le contenu du commentaire ne peut pas être vide"
+                    ]),
+                    new Length([
+                        'min' => 8,
+                        'minMessage' => 'Le contenu du commentaire doit avoir au moins {{ limit }} caractères.',
+                        
+                        'max' => 500,
+                        'maxMessage' => 'Le contenu du commentaire ne peut pas dépasser {{ limit }} caractères.'
+                       
+                    ]),
+                ]
             ]) 
             ;
         

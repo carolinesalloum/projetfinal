@@ -25,18 +25,19 @@ class ContactController extends AbstractController
           //on récupère l'utilisateur authentifié
         $user= $this->getUser();
 
-        // Vérifie si l'utilisateur est connecté
+       // Vérifie si l'utilisateur est connecté
         if (!$user) {
             $this->addFlash('danger', 'Veuillez vous connecter pour nous contacter.');
             return $this->redirectToRoute('app_login');
         }
+        
         // Vérifie si l'utilisateur est vérifié
-    //     if (!$user->getIsVerified()) {
-    //         return $this->redirectToRoute('nonvalide');
-    // }
-    // Crée une nouvelle instance de l'entité Contact
+        if (!$user->getIsVerified()) {
+            return $this->redirectToRoute('nonvalide');
+    }
+   // Crée une nouvelle instance de l'entité Contact
         $contact =new contact;
-      
+        // $contact->setMail($user->getUs);
       // Crée le formulaire en utilisant le type de formulaire ContactType
         $form = $this->createForm(ContactType::class, $contact);
 
@@ -45,7 +46,10 @@ class ContactController extends AbstractController
 
         // Vérifie si le formulaire a été soumis et est valide
         if($form->isSubmitted() && $form->isValid()){
-
+          dump($form->getErrors(true, false));
+         
+          $contact->setMail($form->get('mail')->getData());
+          $contact->setContent($form->get('content')->getData());
            // Persiste l'entité Contact dans la base de données
             $manager->persist($contact);
 
@@ -56,11 +60,11 @@ class ContactController extends AbstractController
             $content = $contact->getContent();
 
                 // Récupère l'adresse e-mail de l'utilisateur actuellement authentifié
-            $userMail = $this->getUser()->getUsername();
+            $userMail = $contact->getMail();
             // dd($userMail);
              // Crée un objet Email pour envoyer le message
             $email = (new Email())
-            ->from($userMail)
+            ->from('info@francoarabophone.fr')
             ->to('info@francoarabophone.fr')
             ->subject('Demand de contact')
             ->text($content);

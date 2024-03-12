@@ -12,9 +12,9 @@
 				</div>
 			{% endfor %}
 		{% endfor %}
-		<h2 class="title text-center my-3">Données personnelles de
+		<h1 class="title text-center my-3">Données personnelles de
 			{{ app.user.nickname }}
-		</h2>
+		</h1>
 		<div class="profile-info">
 			<div class="p
 								rofile-name">
@@ -47,9 +47,11 @@
 		</div>
 
 		<div class="mb-3">
-			<a href="{{ path('delete_account' ) }}" class="button">supprimer mon compte</a>
+		<button class="button" id="deleteAccountButton">
+			<a href="{{ path('delete_account' ) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');" >supprimer mon compte</a></button></div>
 
-		</div>
+
+		
 
 	</div>
 {% endblock %}

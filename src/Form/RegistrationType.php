@@ -66,7 +66,7 @@ class RegistrationType extends AbstractType
                 'age',
                 IntegerType::class,
                 [
-                    'required' => false,
+                    'required' => true,
                     'label' => 'Age',
 
                 ]

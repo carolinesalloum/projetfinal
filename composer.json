@@ -42,6 +42,7 @@
         "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/web-link": "5.4.*",
+        "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "5.4.*",
         "symfonycasts/reset-password-bundle": "^1.17",
         "symfonycasts/verify-email-bundle": "^1.13",
@@ -49,12 +50,13 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.5",
         "phpunit/phpunit": "^9.6",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
         "symfony/debug-bundle": "5.4.*",
         "symfony/maker-bundle": "^1.50",
-        "symfony/phpunit-bridge": "^6.2",
+        "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*"
     },

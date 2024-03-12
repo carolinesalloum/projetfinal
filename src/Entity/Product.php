@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use Assert\NotBlank;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProductRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -19,6 +21,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message ="le titre ne peut pas être vide")
      */
     private $title;
 

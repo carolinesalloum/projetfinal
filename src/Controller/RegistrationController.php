@@ -79,6 +79,7 @@ class RegistrationController extends AbstractController
                
     
             $mailer->send($email);
+            $this->addFlash('success','votre compte est crée avec succes ,veuillez vérifier votre boîte à lettre pour l\'activer');
              //Après le transfert de notre Entity User, on retourne sur le login
             return $this->redirectToRoute('app_login');
             return $userAuthenticator->authenticateUser( $user,$authenticator, $request );//utilisé pour authentifier un utilisateur  en appelant une méthode AuthenticateUser personnalisée sur le service ou la classe $userAuthenticator.

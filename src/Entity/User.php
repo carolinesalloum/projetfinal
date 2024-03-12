@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Assert\NotBlanc;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -37,20 +38,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * 
+     *
      */
     private $password;
 
 
-    public $confirmPassword;
+    // public $confirmPassword;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = ["ROLE_USER"];
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $nickname;
 
@@ -72,8 +74,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="user")
+     *
      */
-    
     private $comments;
 
     /**
@@ -136,9 +138,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
+        
         return $this->roles;
+        $roles[] = 'ROLE_USER';
     }
 
     // /**
@@ -172,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSalt()
+    public function getSalt():void
     {
         // TODO: Implement getSalt() method.
     }
@@ -182,12 +186,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
+    public function getUsername():string
     {
        return $this->email;
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier():string
     {
         return $this->email;
     }

@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentsRepository;
+use Assert\Length;
+use Assert\NotBlank;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentsRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CommentsRepository::class)
@@ -19,6 +21,7 @@ class Comments
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $content;
 

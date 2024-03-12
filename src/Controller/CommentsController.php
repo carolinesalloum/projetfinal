@@ -55,9 +55,9 @@ public function addComment(Request $request, EntityManagerInterface $manager ): 
         return $this->redirectToRoute('app_login');
     }
     // si l'utilisateur n'est pas activé ,afficher la page d'erreur 'compte-non-valide',sinon l'utilisateur peux ajouter un commenaire
-//     if (!$user->getIsVerified()) {
-//         return $this->redirectToRoute('nonvalide');
-// }
+    if (!$user->getIsVerified()) {
+        return $this->redirectToRoute('nonvalide');
+}
     //pour ajouter une commentaire , il faut instencier un objet comment
     $comment = new Comments();
     //ccréation de formulaire en lien avec entité Comment 

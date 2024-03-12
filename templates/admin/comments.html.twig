@@ -19,7 +19,9 @@
         <tr>
         <td>{{ comment.content }}</td>
         <td>
+        {% if  not comment.active  %}  
         <a href="{{ path('admin_accept_comments', {'id': comment.id}) }}" class="btn btn-info">accepter</a>
+        {% endif %}
         <a href="{{ path('admin_delet_comments', {'id': comment.id}) }}" class="btn btn-danger">Supprimer</a>
         </td>
         </tr>

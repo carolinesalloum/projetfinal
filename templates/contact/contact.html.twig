@@ -10,17 +10,19 @@
     </div>
 {% endif %}
 <div class="container-contact"> 
-<h1 class="text-center py-5">Contactez-nous </h1>
+<h1 class="text-center py-5">Contactez-nous</h1>
 <div class="formsection" >
 
  {{ form_start(form) }}
+ {{ form_row(form.mail) }}
 <fieldset class="mb-3">
                        
  {{ form_row(form.content) }}
+ {{ form_row(form.submit) }}
  </fieldset>
  </div>
  
-  <button type="submit" class="button">envoyer</button>
+  {# <button type="submit" class="button">envoyer</button> #}
   {{ form_end(form) }}
  
  </div>

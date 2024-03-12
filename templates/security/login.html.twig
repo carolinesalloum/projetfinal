@@ -5,14 +5,14 @@
 
 {% block body %}
 	{% if error %}
-		<div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security')|raw }}</div>
+		<div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 
 	{% endif %}
-
-	 {# {% if app.user %}
+{# 
+	 {% if app.user %}
 		<div class="mb-3">
 			Vous êtes connecté(e) comme
-			{{ app.user.userIdentifier }},
+			{{ app.user.userIdentifier }}
 		
 		</div>
 	{% endif %}  #}
@@ -20,7 +20,7 @@
 	<div class="container-connexion">
 		
 		<div class="formsection">
-			<form method="post">
+			<form method="post" name="login">
 				<div class="divinput">
 					<label class="pb-2" for="inputEmail">Email</label>
 					<input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus>
@@ -29,7 +29,7 @@
 					<label class="pb-2" for="inputPassword">Mot de passe</label>
 					<input type="password" name="_password" placeholder="password" autocomplete="current-password" required/>
 				</div>
-				 {# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">  #}
+				  <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">  
 				 {# csrf_token est implementer avec security bundle  #}
 				<button type="submit" class="button mt-4">Me connecter</button>
 				<div class="pt-4 pb-3 d-flex justify-content-center">

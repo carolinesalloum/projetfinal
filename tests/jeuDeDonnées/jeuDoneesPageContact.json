@@ -1,0 +1,48 @@
+{
+    "testExistencePageContactOK": {
+        "code": "REG-CONTACT-01",
+        "expectedStatusCode": 200
+    },
+    "testExistencePageContactsKO": {
+        "code": "REG-CONTACT-02",
+        "expectedStatusCode": 404
+    },
+    // "testExistenceOneTagFormOK": {
+    //     "code": "REG-CONTACT-03",
+    //     "expectedTagCount": 1,
+    //     "tagSelector": "form"
+    // },
+    // "testExistenceOneTagFormKO": {
+    //     "code": "REG-CONTACT-04",
+    //     "expectedTagCount": 0,
+    //     "tagSelector": "for"
+    // },
+    // "testExistenceDeQuatreInputOK": {
+    //     "code": "REG-CONTACT-05",
+    //     "expectedTagCount": 4,
+    //     "tagSelector": "input"
+    // },
+    // "testExistenceDeQuatreInputKO": {
+    //     "code": "REG-CONTACT-06",
+    //     "expectedTagCount": 3,
+    //     "tagSelector": "input"
+    // },
+    // "testExistenceDuContenuDansInputNameEgaleNomOK": {
+    //     "code": "REG-CONTACT-07",
+    //     "expectedCheckTagContentName": "contact[name]",
+    //     "tagSelector": "input[name=\"contact[name]\"]"
+    // },
+
+    "testformInputEmail": {
+        "expectedTagCount": 1,
+        "tagSelector": "input[name=\"contact[email]\"]"
+    },
+    "formInputPassword": {
+        "expectedTagCount": 1,
+        "tagSelector": "input[name=\"contact[password]\"]"
+    },
+    "formButtonSubmit": {
+        "expectedTagCount": 1,
+        "tagSelector": "button[type=\"submit\"]"
+    }
+}
